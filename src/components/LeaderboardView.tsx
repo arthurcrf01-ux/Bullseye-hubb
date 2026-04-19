@@ -54,15 +54,32 @@ export function LeaderboardView() {
             </motion.div>
           );
         })}
-        {/* Progress rank indicator like design map */}
+        {/* Progress rank indicator */}
         <div className="mt-auto pt-6 border-t border-slate-800">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[10px] text-slate-500 uppercase tracking-widest">Sua Posição</p>
-              <p className="text-sm font-bold font-mono text-white">#248 (Top 10%)</p>
+              {(() => {
+                const myRank = leaderboard.findIndex(u => u.id === currentUser.id) + 1;
+                const totalUsers = leaderboard.length;
+                const topPercent = totalUsers > 1 ? Math.floor((myRank / totalUsers) * 100) : 100;
+                
+                return (
+                  <p className="text-sm font-bold font-mono text-white">
+                    #{myRank} {totalUsers > 1 ? `(Top ${topPercent}%)` : '(Único Participante)'}
+                  </p>
+                );
+              })()}
             </div>
             <div className="w-24 h-2 bg-slate-800 rounded-full overflow-hidden">
-              <div className="w-3/4 h-full bg-indigo-500"></div>
+              <div 
+                className="h-full bg-indigo-500 transition-all duration-1000" 
+                style={{ 
+                  width: leaderboard.length > 1 
+                    ? `${100 - Math.floor(((leaderboard.findIndex(u => u.id === currentUser.id) + 1) / leaderboard.length) * 100)}%` 
+                    : '100%' 
+                }}
+              ></div>
             </div>
           </div>
         </div>

@@ -1,9 +1,24 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize the API using the provided key. 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiClient: GoogleGenAI | null = null;
+
+function getAIClient() {
+  if (!aiClient) {
+    // Tenta pegar a chave do Vite (Netlify) ou do process.env (AI Studio)
+    const key = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || 
+                (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : undefined);
+    
+    if (!key) {
+      throw new Error("Chave da API do Gemini não encontrada na Netlify. Certifique-se de configurar a variável VITE_GEMINI_API_KEY.");
+    }
+    aiClient = new GoogleGenAI({ apiKey: key });
+  }
+  return aiClient;
+}
 
 export async function analyzeItemRarity(base64Image: string, expectedMimeType: string) {
+  const ai = getAIClient();
+
   // Strip the prefix if it exists (e.g. data:image/png;base64,)
   const base64Data = base64Image.split(',')[1] || base64Image;
 
