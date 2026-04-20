@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} { allow read, write: if false; }
+
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'name', 'points', 'avatarUrl']) &&
+             data.keys().size() == 4 &&
+             data.id is string && data.id.size() <= 128 && data.id == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 64 &&
+             data.points is number && data.points >= 0 &&
+             data.avatarUrl is string && data.avatarUrl.size() <= 2048;
+    }
+
+    function isValidItem(data, ownerId) {
+      return data.keys().hasAll(['id', 'userId', 'name', 'photoBase64', 'rarityCategory', 'rarityScore', 'description', 'estimatedValue', 'createdAt']) &&
+             data.keys().size() == 9 &&
+             data.id is string && data.id.size() <= 128 &&
+             data.userId is string && data.userId == ownerId &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.photoBase64 is string && data.photoBase64.size() <= 1048576 &&
+             data.rarityCategory is string && data.rarityCategory.size() <= 20 &&
+             data.rarityScore is number &&
+             data.description is string && data.description.size() <= 1000 &&
+             data.estimatedValue is string && data.estimatedValue.size() <= 100 &&
+             data.createdAt is number;
+    }
+
+    function isValidCommunity(data) {
+      return data.keys().hasAll(['id', 'name', 'description', 'creatorId', 'createdAt']) &&
+             data.keys().size() == 5 &&
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 64 &&
+             data.description is string && data.description.size() <= 500 &&
+             data.creatorId is string && data.creatorId == request.auth.uid &&
+             data.createdAt is number;
+    }
+
+    function isValidMessage(data) {
+       return data.keys().hasAll(['id', 'userId', 'userName', 'userAvatar', 'text', 'createdAt']) &&
+              data.keys().size() == 6 &&
+              data.id is string && data.id.size() <= 128 &&
+              data.userId is string && data.userId == request.auth.uid &&
+              data.userName is string && data.userName.size() > 0 && data.userName.size() <= 64 &&
+              data.userAvatar is string && data.userAvatar.size() <= 2048 &&
+              data.text is string && data.text.size() > 0 && data.text.size() <= 1000 &&
+              data.createdAt is number;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId);
+      // Enforce where('points', '>=', 0)
+      allow list: if isSignedIn() && resource.data.points >= 0;
+
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+      
+      // Action: PointsUpdate
+      allow update: if isOwner(userId) && isValidId(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['points']);
+    }
+
+    match /users/{userId}/items/{itemId} {
+      allow get: if isSignedIn() && isValidId(userId) && isValidId(itemId);
+      // resource.data.userId enforcing
+      allow list: if isSignedIn() && isValidId(userId) && resource.data.userId == userId; 
+
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(itemId) && isValidItem(incoming(), userId);
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(itemId);
+    }
+
+    match /communities/{communityId} {
+      allow get: if isSignedIn() && isValidId(communityId);
+      // Enforce order by createdAt (force query constraint)
+      allow list: if isSignedIn() && resource.data.createdAt >= 0;
+      
+      allow create: if isSignedIn() && isValidId(communityId) && isValidCommunity(incoming());
+    }
+
+    match /communities/{communityId}/messages/{messageId} {
+      allow get: if isSignedIn() && isValidId(communityId) && isValidId(messageId);
+      // Enforce where('createdAt', '>=', 0)
+      allow list: if isSignedIn() && isValidId(communityId) && resource.data.createdAt >= 0;
+
+      allow create: if isSignedIn() && isValidId(communityId) && isValidId(messageId) && isValidMessage(incoming()) && exists(/databases/$(database)/documents/communities/$(communityId));
+    }
+  }
+}

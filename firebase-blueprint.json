@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with points and basic info.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "points": { "type": "number" },
+        "avatarUrl": { "type": "string" }
+      },
+      "required": ["id", "name", "points", "avatarUrl"]
+    },
+    "CollectorItem": {
+      "title": "CollectorItem",
+      "description": "Personal collector items.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "photoBase64": { "type": "string" },
+        "rarityCategory": { "type": "string" },
+        "rarityScore": { "type": "number" },
+        "description": { "type": "string" },
+        "estimatedValue": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "userId", "name", "photoBase64", "rarityCategory", "rarityScore", "description", "estimatedValue", "createdAt"]
+    },
+    "Community": {
+      "title": "Community",
+      "description": "A group for collectors to chat.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "name", "description", "creatorId", "createdAt"]
+    },
+    "CommunityMessage": {
+      "title": "CommunityMessage",
+      "description": "A message inside a community chat.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userAvatar": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "userId", "userName", "userAvatar", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles. Accessible by anyone to build the leaderboard."
+    },
+    "/users/{userId}/items/{itemId}": {
+      "schema": { "$ref": "#/entities/CollectorItem" },
+      "description": "Items owned by a user."
+    },
+    "/communities/{communityId}": {
+      "schema": { "$ref": "#/entities/Community" },
+      "description": "Public communities."
+    },
+    "/communities/{communityId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/CommunityMessage" },
+      "description": "Messages inside a community. Anyone signed in can post."
+    }
+  }
+}

@@ -29,6 +29,7 @@ export interface Community {
   id: string;
   name: string;
   description: string;
+  creatorId: string;
   createdAt: number;
   messages: CommunityMessage[];
 }
