@@ -30,7 +30,7 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
   };
 
   const textPart = {
-    text: "Analyze this item from a collector's standpoint. Provide a catchy name for the item if none is obvious, classify its rarity into one of the specified categories ('Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'), give it a rarity score from 1 to 100, provide a brief description of why it has this rarity, and estimate a fictional aesthetic value (e.g., '1,000 Credits', 'Priceless', '50 Coins').",
+    text: "Analyze this item from a collector's standpoint. Provide a catchy name for the item if none is obvious, classify its rarity into one of the specified categories ('Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'), give it a rarity score from 1 to 100, provide a brief description of why it has this rarity, and provide a real-world estimated monetary value in Brazilian Reais (BRL) or US Dollars (USD) (e.g., 'R$ 50 - R$ 100', 'U$ 20.00 - U$ 45.00'). Always make it explicitly clear in the string that it is an estimate (e.g., 'Valor Estimado: R$ 50').",
   };
 
   try {
@@ -60,7 +60,7 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
             },
             estimatedValue: {
               type: Type.STRING,
-              description: "A fictional estimated value (e.g., '500 Bullseye Credits').",
+              description: "A real-world estimated value in BRL or USD (e.g., 'Estimativa: R$ 50 - R$ 100').",
             },
           },
           required: ["name", "rarityCategory", "rarityScore", "description", "estimatedValue"],
