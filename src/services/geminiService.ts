@@ -86,8 +86,12 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
        description: string;
        estimatedValue: string;
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("AI Analysis Failed", error);
-    throw new Error("Falha ao analisar o item. Tente novamente.");
+    // Preserva o erro da chave de API não configurada para aparecer na tela
+    if (error.message && error.message.includes("VITE_GEMINI_API_KEY")) {
+      throw error; 
+    }
+    throw new Error("Falha ao analisar o item pelo Gemini. (" + (error.message || "Erro desconhecido") + ")");
   }
 }
