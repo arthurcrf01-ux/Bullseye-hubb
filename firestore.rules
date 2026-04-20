@@ -23,12 +23,12 @@ service cloud.firestore {
              data.keys().size() == 9 &&
              data.id is string && data.id.size() <= 128 &&
              data.userId is string && data.userId == ownerId &&
-             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
-             data.photoBase64 is string && data.photoBase64.size() <= 1048576 &&
-             data.rarityCategory is string && data.rarityCategory.size() <= 20 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 300 &&
+             data.photoBase64 is string && data.photoBase64.size() <= 2097152 &&
+             data.rarityCategory is string && data.rarityCategory.size() <= 50 &&
              data.rarityScore is number &&
-             data.description is string && data.description.size() <= 1000 &&
-             data.estimatedValue is string && data.estimatedValue.size() <= 100 &&
+             data.description is string && data.description.size() <= 3000 &&
+             data.estimatedValue is string && data.estimatedValue.size() <= 500 &&
              data.createdAt is number;
     }
 

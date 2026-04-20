@@ -130,9 +130,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const addItem = async (item: CollectorItem) => {
     if (!currentUser) return;
     const itemRef = doc(db, 'users', currentUser.id, 'items', item.id);
-    // userId must strictly match currentUser.id according to rules
     const payload = { ...item, userId: currentUser.id };
-    await setDoc(itemRef, payload);
+    
+    try {
+      await setDoc(itemRef, payload);
+    } catch (err: any) {
+      console.error("Firestore Error in addItem:", err);
+      // O throw propaga o erro de volta para quem chamou (AddItemView) para ele travar a tela e mostrar a mensagem vermelha.
+      throw new Error("Erro de Segurança no Servidor: " + err.message);
+    }
   };
 
   const deleteItem = async (id: string) => {
