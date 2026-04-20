@@ -54,7 +54,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         setCurrentUser(userObj);
 
         // Fetch Items
-        const qItems = query(collection(db, 'users', firebaseUser.uid, 'items'));
+        const qItems = query(collection(db, 'users', firebaseUser.uid, 'items'), where('userId', '==', firebaseUser.uid));
         const unsubItems = onSnapshot(qItems, (snap) => {
           const fetchedItems = snap.docs.map(d => d.data() as CollectorItem);
           setItems(fetchedItems.sort((a,b) => b.createdAt - a.createdAt));
