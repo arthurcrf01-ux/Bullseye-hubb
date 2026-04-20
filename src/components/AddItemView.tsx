@@ -40,20 +40,64 @@ export function AddItemView({ onComplete }: { onComplete: () => void }) {
     }
   };
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       setError('Por favor, selecione uma imagem válida (PNG, JPG, etc).');
       return;
     }
     setError(null);
-    const reader = new FileReader();
-    reader.onload = (e) => {
+
+    try {
+      const compressedBase64 = await compressImage(file);
       setSelectedImage({
-        url: e.target?.result as string,
+        url: compressedBase64,
         file
       });
-    };
-    reader.readAsDataURL(file);
+    } catch (err: any) {
+      console.error(err);
+      setError('Erro ao processar imagem.');
+    }
+  };
+
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          // Max dimension 800px to ensure it stays well under 1MB
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject('No context');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to jpeg 70% quality
+        };
+        img.onerror = () => reject('Erro ao analisar a imagem original.');
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => reject('Erro ao ler o arquivo.');
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleAnalyze = async () => {
@@ -61,7 +105,8 @@ export function AddItemView({ onComplete }: { onComplete: () => void }) {
     setIsAnalyzing(true);
     setError(null);
     try {
-      const result = await analyzeItemRarity(selectedImage.url, selectedImage.file.type);
+      // O modelo agora exigirá o tipo correto (image/jpeg) como compactamos para jpg na função compressImage.
+      const result = await analyzeItemRarity(selectedImage.url, "image/jpeg");
       
       const newItem = {
         id: uuidv4(),

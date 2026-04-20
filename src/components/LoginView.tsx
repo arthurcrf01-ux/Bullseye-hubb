@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../store/StoreContext';
-import { Target, ArrowRight } from 'lucide-react';
+import { Target, AlertCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function LoginView() {
   const { login } = useStore();
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
+    setError(null);
     try {
       await login();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login failed", err);
+      setError(err?.message || "Ocorreu um erro ao tentar fazer login com o Google.");
     }
   };
 
@@ -38,6 +41,13 @@ export function LoginView() {
         <div className="relative z-10">
           <h2 className="text-xl font-bold mb-2">Entrar na Nuvem</h2>
           <p className="text-sm text-slate-400 mb-6">Conecte sua conta do Google para sincronizar sua coleção e conversar em grupos de colecionadores pelo mundo todo.</p>
+
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-950/50 border border-red-500/50 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+              <p className="text-xs text-red-200">{error}</p>
+            </div>
+          )}
 
           <button 
             onClick={handleLogin}
