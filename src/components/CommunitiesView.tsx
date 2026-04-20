@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/StoreContext';
-import { Users, Plus, MessageSquare, Send, ArrowLeft, Shield } from 'lucide-react';
+import { Users, Plus, MessageSquare, Send, ArrowLeft, Shield, User, Clock, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Community } from '../types';
+import { DirectMessageModal } from './DirectMessageModal';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 export function CommunitiesView() {
   const { communities, createCommunity, sendMessage, currentUser } = useStore();
@@ -13,6 +16,11 @@ export function CommunitiesView() {
   const [newDesc, setNewDesc] = useState('');
 
   const [message, setMessage] = useState('');
+  
+  const [activeTab, setActiveTab] = useState<'communities' | 'friends'>('communities');
+  const [activeChat, setActiveChat] = useState<string | null>(null);
+
+  const { friendships } = useStore();
 
   const handleCreate = async () => {
     if (newName.trim() && newDesc.trim()) {
@@ -123,16 +131,34 @@ export function CommunitiesView() {
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">Comunidades</h1>
           <p className="text-slate-400 mt-2">Encontre nichos, compartilhe descobertas e converse.</p>
         </div>
-        <button 
-          onClick={() => setIsCreating(!isCreating)}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl font-bold transition-colors text-sm"
-        >
-          <Plus className="w-4 h-4" />
-          CRIAR GRUPO
-        </button>
+        
+        <div className="flex bg-slate-900 border border-slate-800 rounded-xl p-1 mb-4 md:mb-0">
+          <button
+            onClick={() => setActiveTab('communities')}
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-colors ${activeTab === 'communities' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            Comunidades
+          </button>
+          <button
+            onClick={() => setActiveTab('friends')}
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-colors ${activeTab === 'friends' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            Amigos
+          </button>
+        </div>
+
+        {activeTab === 'communities' && (
+          <button 
+            onClick={() => setIsCreating(!isCreating)}
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl font-bold transition-colors text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            CRIAR GRUPO
+          </button>
+        )}
       </header>
 
-      {isCreating && (
+      {activeTab === 'communities' && isCreating && (
         <motion.div 
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
@@ -172,38 +198,139 @@ export function CommunitiesView() {
         </motion.div>
       )}
 
-      {communities.length === 0 && !isCreating ? (
-         <div className="text-center py-20 bg-slate-900/50 border border-slate-800 border-dashed rounded-2xl">
-           <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-           <h3 className="text-lg font-medium text-slate-300">Nenhuma comunidade ainda</h3>
-           <p className="text-slate-500 mt-2">Crie o primeiro grupo e convide colecionadores.</p>
-         </div>
+      {activeTab === 'communities' ? (
+        communities.length === 0 && !isCreating ? (
+           <div className="text-center py-20 bg-slate-900/50 border border-slate-800 border-dashed rounded-2xl">
+             <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+             <h3 className="text-lg font-medium text-slate-300">Nenhuma comunidade ainda</h3>
+             <p className="text-slate-500 mt-2">Crie o primeiro grupo e convide colecionadores.</p>
+           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {communities.map(community => (
+              <motion.div 
+                key={community.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                onClick={() => setSelectedCommunity(community)}
+                className="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 cursor-pointer transition-colors group flex flex-col h-40 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Users className="w-24 h-24" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2 relative z-10 group-hover:text-indigo-400 transition-colors">{community.name}</h3>
+                <p className="text-sm text-slate-400 relative z-10 line-clamp-2">{community.description}</p>
+                
+                <div className="mt-auto relative z-10 flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-slate-600 group-hover:text-slate-400 transition-colors">
+                    {community.messages.length} Mensagens
+                  </span>
+                  <MessageSquare className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 transition-colors" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {communities.map(community => (
-            <motion.div 
-              key={community.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              onClick={() => setSelectedCommunity(community)}
-              className="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 cursor-pointer transition-colors group flex flex-col h-40 relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                <Users className="w-24 h-24" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2 relative z-10 group-hover:text-indigo-400 transition-colors">{community.name}</h3>
-              <p className="text-sm text-slate-400 relative z-10 line-clamp-2">{community.description}</p>
-              
-              <div className="mt-auto relative z-10 flex items-center justify-between">
-                <span className="text-[10px] uppercase tracking-widest font-bold text-slate-600 group-hover:text-slate-400 transition-colors">
-                  {community.messages.length} Mensagens
-                </span>
-                <MessageSquare className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 transition-colors" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <FriendsList 
+          friendships={friendships} 
+          currentUser={currentUser} 
+          onChat={(id) => setActiveChat(id)} 
+        />
       )}
+
+      {activeChat && (
+        <DirectMessageModal 
+          friendshipId={activeChat} 
+          onClose={() => setActiveChat(null)} 
+        />
+      )}
+    </div>
+  );
+}
+
+function FriendsList({ friendships, currentUser, onChat }: any) {
+  const { acceptFriendRequest } = useStore();
+  const [friendUsers, setFriendUsers] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    async function loadFriends() {
+      if (!currentUser) return;
+      const loaded: any[] = [];
+      for (const f of friendships) {
+        const friendId = f.participants.find((id: string) => id !== currentUser.id);
+        if (friendId) {
+          try {
+            const snap = await getDoc(doc(db, 'users', friendId));
+            if (snap.exists()) {
+              loaded.push({ ...snap.data(), friendship: f });
+            }
+          } catch(e) {}
+        }
+      }
+      setFriendUsers(loaded);
+    }
+    loadFriends();
+  }, [friendships, currentUser]);
+
+  if (friendships.length === 0) {
+    return (
+       <div className="text-center py-20 bg-slate-900/50 border border-slate-800 border-dashed rounded-2xl">
+         <User className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+         <h3 className="text-lg font-medium text-slate-300">Nenhum amigo ainda</h3>
+         <p className="text-slate-500 mt-2">Navegue no Ranking para adicionar novos amigos.</p>
+       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {friendUsers.map((user) => {
+        const { friendship } = user;
+        const isPending = friendship.status === 'pending';
+        const isRequestFromMe = friendship.requesterId === currentUser?.id;
+
+        return (
+          <motion.div 
+            key={user.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex items-center justify-between p-4 rounded-xl border ${isPending ? 'bg-slate-900/40 border-slate-800 border-dashed' : 'bg-slate-900 border-slate-800'}`}
+          >
+            <div className="flex items-center gap-4">
+              <img src={user.avatarUrl} alt={user.name} className="w-12 h-12 rounded-full border border-slate-700 bg-slate-800" />
+              <div>
+                <h3 className="text-white font-bold">{user.name}</h3>
+                <p className="text-indigo-400 text-xs font-mono">{user.points} pts</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {isPending ? (
+                isRequestFromMe ? (
+                  <span className="text-slate-500 text-sm flex items-center gap-1 bg-slate-800 px-3 py-1.5 rounded-full">
+                    <Clock className="w-4 h-4" /> Aguardando
+                  </span>
+                ) : (
+                  <button 
+                    onClick={() => acceptFriendRequest(friendship.id)}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
+                  >
+                     <Check className="w-4 h-4" /> Aceitar
+                  </button>
+                )
+              ) : (
+                <button 
+                  onClick={() => onChat(friendship.id)}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
+                >
+                   <MessageSquare className="w-4 h-4" /> Chat
+                </button>
+              )}
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

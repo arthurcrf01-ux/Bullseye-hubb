@@ -25,6 +25,22 @@ export interface CommunityMessage {
   createdAt: number;
 }
 
+export interface Friendship {
+  id: string;
+  participants: string[];
+  status: 'pending' | 'accepted';
+  requesterId: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  userId: string;
+  text: string;
+  createdAt: number;
+}
+
 export interface Community {
   id: string;
   name: string;

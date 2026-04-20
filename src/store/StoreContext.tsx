@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { CollectorItem, User, Community, CommunityMessage } from '../types';
+import { CollectorItem, User, Community, CommunityMessage, Friendship, ChatMessage } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, db, loginWithGoogle, logoutGoogle, testConnection } from '../lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -10,6 +10,7 @@ interface StoreState {
   currentUser: User | null;
   leaderboard: User[];
   communities: Community[];
+  friendships: Friendship[];
   isLoaded: boolean;
   addItem: (item: CollectorItem) => void;
   deleteItem: (id: string) => void;
@@ -17,6 +18,9 @@ interface StoreState {
   logout: () => Promise<void>;
   createCommunity: (name: string, description: string) => Promise<void>;
   sendMessage: (communityId: string, text: string) => Promise<void>;
+  sendFriendRequest: (targetUserId: string) => Promise<void>;
+  acceptFriendRequest: (friendshipId: string) => Promise<void>;
+  sendDirectMessage: (friendshipId: string, text: string) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreState | undefined>(undefined);
@@ -26,6 +30,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [communities, setCommunities] = useState<Community[]>([]);
   const [leaderboard, setLeaderboard] = useState<User[]>([]);
+  const [friendships, setFriendships] = useState<Friendship[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -113,9 +118,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setIsLoaded(true);
     });
 
+    // Friendships
+    const qFriendships = query(collection(db, 'friendships'), where('participants', 'array-contains', currentUser.id));
+    const unsubFriendships = onSnapshot(qFriendships, (snap) => {
+      const updatedFriendships = snap.docs.map(d => d.data() as Friendship);
+      setFriendships(updatedFriendships.sort((a, b) => b.updatedAt - a.updatedAt));
+    });
+
     return () => {
       unsubUsers();
       unsubCommunities();
+      unsubFriendships();
     };
   }, [currentUser]);
 
@@ -182,8 +195,55 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const sendFriendRequest = async (targetUserId: string) => {
+    if (!currentUser) return;
+    const participants = [currentUser.id, targetUserId].sort();
+    const friendshipId = participants.join('_');
+    
+    // Verify if already exists
+    const existing = friendships.find(f => f.id === friendshipId);
+    if (existing) return;
+
+    const friendship: Friendship = {
+      id: friendshipId,
+      participants,
+      status: 'pending',
+      requesterId: currentUser.id,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    await setDoc(doc(db, 'friendships', friendshipId), friendship);
+  };
+
+  const acceptFriendRequest = async (friendshipId: string) => {
+    if (!currentUser) return;
+    const existing = friendships.find(f => f.id === friendshipId);
+    if (!existing || existing.status === 'accepted') return;
+    
+    await setDoc(doc(db, 'friendships', friendshipId), {
+      status: 'accepted',
+      updatedAt: Date.now()
+    }, { merge: true });
+  };
+
+  const sendDirectMessage = async (friendshipId: string, text: string) => {
+    if (!currentUser) return;
+    const msgId = uuidv4();
+    const message: ChatMessage = {
+      id: msgId,
+      userId: currentUser.id,
+      text,
+      createdAt: Date.now()
+    };
+    await setDoc(doc(db, 'friendships', friendshipId, 'messages', msgId), message);
+  };
+
   return (
-    <StoreContext.Provider value={{ items, currentUser, leaderboard, communities, isLoaded, addItem, deleteItem, login, logout, createCommunity, sendMessage }}>
+    <StoreContext.Provider value={{
+      items, currentUser, leaderboard, communities, friendships, isLoaded, 
+      addItem, deleteItem, login, logout, createCommunity, sendMessage,
+      sendFriendRequest, acceptFriendRequest, sendDirectMessage
+    }}>
       {children}
     </StoreContext.Provider>
   );

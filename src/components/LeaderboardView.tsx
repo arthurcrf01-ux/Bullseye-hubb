@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../store/StoreContext';
 import { Trophy, Medal, Star } from 'lucide-react';
 import { motion } from 'motion/react';
+import { UserProfileModal } from './UserProfileModal';
+import { DirectMessageModal } from './DirectMessageModal';
 
 export function LeaderboardView() {
   const { leaderboard, currentUser } = useStore();
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [activeChat, setActiveChat] = useState<string | null>(null);
   
   if (!currentUser) return null;
 
@@ -29,10 +33,11 @@ export function LeaderboardView() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               key={user.id}
-              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+              onClick={() => setSelectedUser(user)}
+              className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${
                 isMe 
                   ? 'bg-indigo-900/20 border border-indigo-500/50' 
-                  : 'hover:bg-slate-800/50'
+                  : 'hover:bg-slate-800 border border-transparent hover:border-slate-700'
               }`}
             >
               {/* Position */}
@@ -84,6 +89,24 @@ export function LeaderboardView() {
           </div>
         </div>
       </div>
+
+      {selectedUser && (
+        <UserProfileModal 
+          user={selectedUser} 
+          onClose={() => setSelectedUser(null)} 
+          onMessage={(friendshipId) => {
+            setSelectedUser(null);
+            setActiveChat(friendshipId);
+          }}
+        />
+      )}
+
+      {activeChat && (
+        <DirectMessageModal 
+          friendshipId={activeChat} 
+          onClose={() => setActiveChat(null)} 
+        />
+      )}
     </div>
   );
 }

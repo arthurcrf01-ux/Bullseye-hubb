@@ -53,6 +53,28 @@ service cloud.firestore {
               data.createdAt is number;
     }
 
+    function isValidFriendship(data) {
+       return data.keys().hasAll(['id', 'participants', 'status', 'requesterId', 'createdAt', 'updatedAt']) &&
+              data.keys().size() == 6 &&
+              data.id is string && data.id.size() <= 128 &&
+              data.participants is list && data.participants.size() == 2 &&
+              data.participants[0] is string && data.participants[1] is string &&
+              request.auth.uid in data.participants &&
+              data.status is string && data.status in ['pending', 'accepted'] &&
+              data.requesterId is string && data.requesterId in data.participants &&
+              data.createdAt is number &&
+              data.updatedAt is number;
+    }
+
+    function isValidChatMessage(data) {
+       return data.keys().hasAll(['id', 'userId', 'text', 'createdAt']) &&
+              data.keys().size() == 4 &&
+              data.id is string && data.id.size() <= 128 &&
+              data.userId is string && data.userId == request.auth.uid &&
+              data.text is string && data.text.size() > 0 && data.text.size() <= 2000 &&
+              data.createdAt is number;
+    }
+
     match /users/{userId} {
       allow get: if isSignedIn() && isValidId(userId);
       // Enforce where('points', '>=', 0)
@@ -90,6 +112,36 @@ service cloud.firestore {
       allow list: if isSignedIn() && isValidId(communityId) && resource.data.createdAt >= 0;
 
       allow create: if isSignedIn() && isValidId(communityId) && isValidId(messageId) && isValidMessage(incoming()) && exists(/databases/$(database)/documents/communities/$(communityId));
+    }
+
+    match /friendships/{friendshipId} {
+      allow get: if isSignedIn() && isValidId(friendshipId) && request.auth.uid in resource.data.participants;
+      allow list: if isSignedIn() && request.auth.uid in resource.data.participants;
+      
+      allow create: if isSignedIn() && isValidId(friendshipId) && isValidFriendship(incoming()) && 
+                       incoming().status == 'pending' && 
+                       incoming().requesterId == request.auth.uid;
+      
+      allow update: if isSignedIn() && isValidId(friendshipId) && isValidFriendship(incoming()) &&
+                       request.auth.uid in existing().participants &&
+                       incoming().id == existing().id &&
+                       incoming().participants == existing().participants &&
+                       incoming().requesterId == existing().requesterId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) &&
+                       incoming().status == 'accepted';
+    }
+
+    match /friendships/{friendshipId}/messages/{messageId} {
+      allow get: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) &&
+                 request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants;
+                 
+      allow list: if isSignedIn() && isValidId(friendshipId) && resource.data.createdAt >= 0 &&
+                  request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants;
+
+      allow create: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) && isValidChatMessage(incoming()) &&
+                       request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants &&
+                       get(/databases/$(database)/documents/friendships/$(friendshipId)).data.status == 'accepted';
     }
   }
 }
