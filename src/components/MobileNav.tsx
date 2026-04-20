@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, LayoutGrid, PlusCircle, Trophy } from 'lucide-react';
+import { Home, LayoutGrid, PlusCircle, Trophy, Users } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { ViewState } from '../App';
 
@@ -12,7 +12,8 @@ export function MobileNav({ currentView, setCurrentView }: MobileNavProps) {
   const navItems = [
     { id: 'home', icon: Home, label: 'Início' },
     { id: 'collection', icon: LayoutGrid, label: 'Acervo' },
-    { id: 'add', icon: PlusCircle, label: 'Novo Item' },
+    { id: 'add', icon: PlusCircle, label: 'Item' },
+    { id: 'communities', icon: Users, label: 'Grupos' },
     { id: 'leaderboard', icon: Trophy, label: 'Ranking' },
   ] as const;
 

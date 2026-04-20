@@ -1,17 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
-import { CollectorItem, User } from '../types';
+import { CollectorItem, User, Community, CommunityMessage } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 interface StoreState {
   items: CollectorItem[];
   currentUser: User | null;
   leaderboard: User[];
+  communities: Community[];
   isLoaded: boolean;
   addItem: (item: CollectorItem) => void;
   deleteItem: (id: string) => void;
   login: (name: string) => Promise<void>;
   logout: () => Promise<void>;
+  createCommunity: (name: string, description: string) => Promise<void>;
+  sendMessage: (communityId: string, text: string) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreState | undefined>(undefined);
@@ -19,6 +22,7 @@ const StoreContext = createContext<StoreState | undefined>(undefined);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CollectorItem[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [communities, setCommunities] = useState<Community[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -27,8 +31,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       try {
         const storedItems = await localforage.getItem<CollectorItem[]>('bullseye_items') || [];
         const storedUser = await localforage.getItem<User>('bullseye_user');
+        const storedCommunities = await localforage.getItem<Community[]>('bullseye_communities') || [];
         
         setItems(storedItems);
+        setCommunities(storedCommunities);
         if (storedUser) {
           // Recalculate points
           const points = storedItems.length * 10;
@@ -83,8 +89,44 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const leaderboard = currentUser ? [currentUser] : [];
 
+  const createCommunity = async (name: string, description: string) => {
+    const newCommunity: Community = {
+      id: uuidv4(),
+      name,
+      description,
+      createdAt: Date.now(),
+      messages: []
+    };
+    const updated = [newCommunity, ...communities];
+    setCommunities(updated);
+    await localforage.setItem('bullseye_communities', updated);
+  };
+
+  const sendMessage = async (communityId: string, text: string) => {
+    if (!currentUser) return;
+    
+    const message: CommunityMessage = {
+      id: uuidv4(),
+      userId: currentUser.id,
+      userName: currentUser.name,
+      userAvatar: currentUser.avatarUrl,
+      text,
+      createdAt: Date.now()
+    };
+
+    const updated = communities.map(c => {
+      if (c.id === communityId) {
+        return { ...c, messages: [...c.messages, message] };
+      }
+      return c;
+    });
+
+    setCommunities(updated);
+    await localforage.setItem('bullseye_communities', updated);
+  };
+
   return (
-    <StoreContext.Provider value={{ items, currentUser, leaderboard, isLoaded, addItem, deleteItem, login, logout }}>
+    <StoreContext.Provider value={{ items, currentUser, leaderboard, communities, isLoaded, addItem, deleteItem, login, logout, createCommunity, sendMessage }}>
       {children}
     </StoreContext.Provider>
   );
