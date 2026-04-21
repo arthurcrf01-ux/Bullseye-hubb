@@ -30,7 +30,7 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
   };
 
   const textPart = {
-    text: "Analyze this item from a collector's standpoint. Provide a catchy name for the item if none is obvious, classify its rarity into one of the specified categories ('Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'), give it a rarity score from 1 to 100, provide a brief description of why it has this rarity, and provide a real-world estimated monetary value in Brazilian Reais (BRL) or US Dollars (USD) (e.g., 'R$ 50 - R$ 100', 'U$ 20.00 - U$ 45.00'). Always make it explicitly clear in the string that it is an estimate (e.g., 'Valor Estimado: R$ 50').",
+    text: "Analyze this item from a collector's standpoint. Provide a catchy name for the item if none is obvious. Give it a rarity score from 1 to 100, provide a brief description of why it has this rarity, and provide a real-world estimated monetary value in Brazilian Reais (BRL) or US Dollars (USD) (e.g., 'R$ 50 - R$ 100', 'U$ 20.00 - U$ 45.00'). Always make it explicitly clear in the string that it is an estimate (e.g., 'Valor Estimado: R$ 50'). IMPORTANT: The 'name', 'description', and 'estimatedValue' must be written in English. However, for the 'rarityCategory', you must strictly classify the item into exactly one of these five Portuguese categories: 'Comum', 'Incomum', 'Raro', 'Épico', 'Lendário'.",
   };
 
   try {
@@ -38,17 +38,18 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
       model: "gemini-3-flash-preview",
       contents: { parts: [imagePart, textPart] },
       config: {
+        temperature: 0.1,
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
             name: {
               type: Type.STRING,
-              description: "The name of the item.",
+              description: "The name of the item in English.",
             },
             rarityCategory: {
               type: Type.STRING,
-              description: "Must be exactly one of: Common, Uncommon, Rare, Epic, Legendary.",
+              description: "Must be exactly one of the Portuguese labels: Comum, Incomum, Raro, Épico, Lendário.",
             },
             rarityScore: {
               type: Type.NUMBER,
@@ -56,11 +57,11 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
             },
             description: {
               type: Type.STRING,
-              description: "A short paragraph explaining the item's features and why it received this rarity rating.",
+              description: "A short paragraph in English explaining the item's features and why it received this rarity rating.",
             },
             estimatedValue: {
               type: Type.STRING,
-              description: "A real-world estimated value in BRL or USD (e.g., 'Estimativa: R$ 50 - R$ 100').",
+              description: "A real-world estimated value.",
             },
           },
           required: ["name", "rarityCategory", "rarityScore", "description", "estimatedValue"],
@@ -73,15 +74,15 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
     
     const result = JSON.parse(jsonStr);
     
-    // Ensure the category is valid, fallback to Common
-    const validCategories = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
+    // Ensure the category is valid, fallback to Comum
+    const validCategories = ['Comum', 'Incomum', 'Raro', 'Épico', 'Lendário'];
     if (!validCategories.includes(result.rarityCategory)) {
-        result.rarityCategory = 'Uncommon';
+        result.rarityCategory = 'Incomum';
     }
 
     return result as {
        name: string;
-       rarityCategory: 'Common' | 'Uncommon' | 'Rare' | 'Epic' | 'Legendary';
+       rarityCategory: 'Comum' | 'Incomum' | 'Raro' | 'Épico' | 'Lendário';
        rarityScore: number;
        description: string;
        estimatedValue: string;

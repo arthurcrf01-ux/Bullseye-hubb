@@ -4,6 +4,12 @@ import { motion } from 'motion/react';
 import { Trash2 } from 'lucide-react';
 
 const rarityColors = {
+  Comum: 'bg-emerald-500 text-slate-950',
+  Incomum: 'bg-indigo-500 text-white',
+  Raro: 'bg-blue-500 text-white',
+  Épico: 'bg-purple-500 text-white',
+  Lendário: 'bg-yellow-500 text-slate-950',
+  // keep old keys in case database has old records
   Common: 'bg-emerald-500 text-slate-950',
   Uncommon: 'bg-indigo-500 text-white',
   Rare: 'bg-blue-500 text-white',

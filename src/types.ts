@@ -2,7 +2,7 @@ export interface CollectorItem {
   id: string;
   name: string;
   photoBase64: string;
-  rarityCategory: 'Common' | 'Uncommon' | 'Rare' | 'Epic' | 'Legendary';
+  rarityCategory: 'Comum' | 'Incomum' | 'Raro' | 'Épico' | 'Lendário';
   rarityScore: number;
   description: string;
   estimatedValue: string;
