@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, LayoutGrid, PlusCircle, Trophy, Home, BookOpen, Users } from 'lucide-react';
+import { Target, LayoutGrid, PlusCircle, Trophy, Home, BookOpen, Users, Star } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { ViewState } from '../App';
 import { motion } from 'motion/react';
@@ -17,6 +17,7 @@ export function Sidebar({ currentView, setCurrentView }: SidebarProps) {
     { id: 'leaderboard', icon: Trophy, label: 'Ranking' },
     { id: 'communities', icon: Users, label: 'Comunidades' },
     { id: 'articles', icon: BookOpen, label: 'Curiosidades & Blog' },
+    { id: 'stickers', icon: Star, label: 'Copa 2026' },
   ] as const;
 
   return (

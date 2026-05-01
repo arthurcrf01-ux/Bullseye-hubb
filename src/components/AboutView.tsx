@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Mail, Instagram, Info } from 'lucide-react';
+import { Target, Mail, Info } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function AboutView() {
@@ -61,20 +61,6 @@ export function AboutView() {
             
             <div className="space-y-4 mt-auto">
               <a 
-                href="https://instagram.com/bullseye_ti" 
-                target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-4 rounded-xl transition-colors group"
-              >
-                <div className="bg-indigo-600/20 p-2 rounded-lg group-hover:bg-indigo-600/40 transition-colors">
-                   <Instagram className="w-6 h-6 text-indigo-400" />
-                </div>
-                <div>
-                  <p className="text-white font-bold">Instagram</p>
-                  <p className="text-slate-400 text-xs">@bullseye_ti</p>
-                </div>
-              </a>
-
-              <a 
                 href="https://www.tiktok.com/@bullseye_ti" 
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-4 rounded-xl transition-colors group"
@@ -89,7 +75,7 @@ export function AboutView() {
                   <p className="text-slate-400 text-xs">@bullseye_ti</p>
                 </div>
               </a>
-              
+
               <a
                 href="mailto:taquions.7725.richguys@gmail.com"
                 className="flex items-center gap-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-4 rounded-xl transition-colors group"

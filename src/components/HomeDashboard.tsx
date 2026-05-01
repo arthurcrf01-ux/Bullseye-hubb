@@ -1,9 +1,9 @@
 import React from 'react';
 import { useStore } from '../store/StoreContext';
-import { Trophy, ArrowRight, Zap, Star, Target } from 'lucide-react';
+import { Trophy, ArrowRight, Zap, Star, Target, Album } from 'lucide-react';
 import { motion } from 'motion/react';
 
-export function HomeDashboard({ onAddClick }: { onAddClick: () => void }) {
+export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => void; onNavigate: (view: string) => void }) {
   const { currentUser, items, leaderboard } = useStore();
   
   if (!currentUser) return null;
@@ -34,6 +34,36 @@ export function HomeDashboard({ onAddClick }: { onAddClick: () => void }) {
           </div>
         </button>
       </header>
+
+      {/* World Cup Promotional Banner */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 rounded-3xl p-8 relative overflow-hidden shadow-2xl cursor-pointer hover:scale-[1.01] transition-transform group"
+        onClick={() => onNavigate('stickers')}
+      >
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+        <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0">
+              <Album className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+            </div>
+            <div>
+              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight">
+                Álbum da Copa 2026
+              </h3>
+              <p className="text-emerald-50 font-medium md:text-lg opacity-90 max-w-xl">
+                Dicas secretas, curiosidades das exclusivas e encontre grupos para trocar as suas repetidas!
+              </p>
+            </div>
+          </div>
+          <button className="shrink-0 flex items-center gap-2 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold uppercase tracking-wide hover:bg-emerald-50 transition-colors">
+            Saiba Mais
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

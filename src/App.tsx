@@ -12,8 +12,9 @@ import { ArticlesView } from './components/ArticlesView';
 import { AboutView } from './components/AboutView';
 import { Target, BookOpen, Shield, Users, LogIn, Info } from 'lucide-react';
 import { CommunitiesView } from './components/CommunitiesView';
+import { StickersView } from './components/StickersView';
 
-export type ViewState = 'home' | 'collection' | 'add' | 'leaderboard' | 'articles' | 'terms' | 'communities' | 'about';
+export type ViewState = 'home' | 'collection' | 'add' | 'leaderboard' | 'articles' | 'terms' | 'communities' | 'about' | 'stickers';
 
 function AppContent() {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -54,7 +55,7 @@ function AppContent() {
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto w-full relative pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full min-h-full">
-           {currentView === 'home' && <HomeDashboard onAddClick={() => setCurrentView('add')} />}
+           {currentView === 'home' && <HomeDashboard onAddClick={() => setCurrentView('add')} onNavigate={(v) => setCurrentView(v)} />}
            {currentView === 'collection' && <MyCollection />}
            {currentView === 'add' && <AddItemView onComplete={() => setCurrentView('collection')} />}
            {currentView === 'leaderboard' && <LeaderboardView />}
@@ -62,6 +63,7 @@ function AppContent() {
            {currentView === 'terms' && <TermsView />}
            {currentView === 'about' && <AboutView />}
            {currentView === 'communities' && <CommunitiesView />}
+           {currentView === 'stickers' && <StickersView />}
         </div>
         
         {/* Footer para SEO e AdSense */}
