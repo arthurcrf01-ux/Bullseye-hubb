@@ -63,7 +63,7 @@ function AppContent() {
            {currentView === 'terms' && <TermsView />}
            {currentView === 'about' && <AboutView />}
            {currentView === 'communities' && <CommunitiesView />}
-           {currentView === 'stickers' && <StickersView />}
+           {currentView === 'stickers' && <StickersView onNavigate={(v: any) => setCurrentView(v)} />}
         </div>
         
         {/* Footer para SEO e AdSense */}

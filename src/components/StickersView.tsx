@@ -1,83 +1,81 @@
 import React from 'react';
-import { BookOpen, Users, Trophy, BookMarked, Globe, Sparkles /*, Sticker as StickerIcon*/ } from 'lucide-react';
+import { BookOpen, Users, Trophy, BookMarked, Globe, Sparkles, ArrowRight, Stars } from 'lucide-react';
 
-export function StickersView() {
+export function StickersView({ onNavigate }: { onNavigate?: (view: string) => void }) {
   return (
     <div className="max-w-5xl mx-auto py-8 animate-in fade-in duration-500">
-      <header className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4 uppercase tracking-tight">
-          Figurinhas Copa 2026
+      <header className="mb-12 text-center relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-lg bg-green-500/20 blur-[100px] rounded-full pointer-events-none"></div>
+        <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-yellow-400 to-blue-500 mb-6 uppercase tracking-tight leading-tight">
+          Copa 2026:<br /> A Febre das Figurinhas
         </h1>
-        <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
-          O guia definitivo para completar seu álbum com eficiência, descobrir cromos raros e criar sua comunidade de troca.
+        <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)"}}>
+          Prepare-se para o maior torneio do mundo. O guia definitivo para completar seu álbum com eficiência, descobrir cromos ultrarraros e criar sua comunidade de troca oficial no aplicativo.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 border border-slate-700 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all"></div>
-          <BookMarked className="w-12 h-12 text-emerald-400 mb-6" />
-          <h2 className="text-2xl font-bold text-white mb-4">Curiosidades do Álbum 2026</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="bg-gradient-to-br from-green-900/40 to-slate-900 rounded-3xl p-8 border border-green-500/30 shadow-2xl relative overflow-hidden group hover:border-green-400/60 transition-colors">
+          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-green-500/20 rounded-full blur-3xl group-hover:bg-green-500/30 transition-all"></div>
+          <Stars className="w-12 h-12 text-yellow-400 mb-6 group-hover:rotate-12 transition-transform" />
+          <h2 className="text-2xl font-bold text-white mb-4">A Lógica dos Cromos Lendários</h2>
           <ul className="space-y-4 text-slate-300">
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></span>
-              <p>Três países sediando significa uma quantidade recorde de estádios e páginas dedicadas às culturas dos anfitriões.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-yellow-400 mt-2 shadow-[0_0_8px_rgba(250,204,21,0.8)]"></span>
+              <p>Com três países sediando o torneio simultaneamente, esta edição possui uma proporção inédita de páginas dedicadas à infraestrutura, diminuindo a tiragem de lendas do esporte.</p>
             </li>
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></span>
-              <p>Os cromos holográficos deste ano (lendários) trazem a tecnologia de escaneamento QR para exibir lances no aplicativo oficial.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-yellow-400 mt-2 shadow-[0_0_8px_rgba(250,204,21,0.8)]"></span>
+              <p>Os cromos <strong>Ouro, Prata, Bronze e Vinho</strong> retornam. Um Ouro de um craque mundial na primeira página de uma seleção atinge picos de avaliação astronômicos nos primeiros 10 dias de lançamento.</p>
             </li>
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></span>
-              <p>Figurinhas de estreantes têm bordas holográficas menores, aumentando o valor especulativo de coleções futuras.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-yellow-400 mt-2 shadow-[0_0_8px_rgba(250,204,21,0.8)]"></span>
+              <p>Dica: Nunca cole um cromo brilhante perfeitamente alinhado se você suspeita que ele vale dinheiro seco. O ato de remover a película traseira zera o valor dele para avaliadores (grading).</p>
             </li>
           </ul>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 border border-slate-700 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 left-0 -ml-8 -mt-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
-          <Globe className="w-12 h-12 text-cyan-400 mb-6" />
-          <h2 className="text-2xl font-bold text-white mb-4">Estratégias de Coleção</h2>
+        <div className="bg-gradient-to-br from-blue-900/40 to-slate-900 rounded-3xl p-8 border border-blue-500/30 shadow-2xl relative overflow-hidden group hover:border-blue-400/60 transition-colors">
+          <div className="absolute top-0 left-0 -ml-8 -mt-8 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition-all"></div>
+          <Globe className="w-12 h-12 text-blue-400 mb-6 group-hover:-rotate-12 transition-transform" />
+          <h2 className="text-2xl font-bold text-white mb-4">Estratégias de Negociação</h2>
           <ul className="space-y-4 text-slate-300">
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2"></span>
-              <p><strong>Evite colar no começo:</strong> Guarde os cromos mais brilhantes e craques no plástico até a segunda semana para maior poder de negociação.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-blue-400 mt-2 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
+              <p><strong>A Regra da Segunda Semana:</strong> Segure suas repetidas! Nos primeiros dias o mercado está inflacionado, mas na segunda semana, colecionadores desesperados oferecem 5 cromos comuns por um escudo brilhante.</p>
             </li>
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2"></span>
-              <p><strong>A regra do 1 por 3:</strong> Um cromo brilhante geralmente é negociado por pelo menos 3 cromos normais que você precisa urgentemente.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-blue-400 mt-2 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
+              <p><strong>Foco nas Nações Menores:</strong> Cuidado, as editoras frequentemente restringem os números finais de lotes de nações sem muita tradição, criando escassez artificial para os últimos times do álbum.</p>
             </li>
             <li className="flex items-start gap-3">
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2"></span>
-              <p><strong>Foco nas seleções pequenas:</strong> Surpreendentemente, jogadores de seleções menos populares são impressos em menor escala ou retidos.</p>
+              <span className="shrink-0 w-2 h-2 rounded-full bg-blue-400 mt-2 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
+              <p><strong>Organização Matemática:</strong> Ordene seu monte de repetidas numericamente usando elásticos por centenas. Apresentar-se como organizado atrai negociações velozes em praças públicas.</p>
             </li>
           </ul>
         </div>
       </div>
 
-      <div className="bg-slate-900 border-2 border-indigo-500/30 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent"></div>
+      <div className="bg-gradient-to-r from-green-900/60 via-slate-900 to-yellow-900/40 border-2 border-yellow-500/40 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
         <div className="relative z-10 flex flex-col items-center">
-          <Users className="w-16 h-16 text-indigo-400 mb-6" />
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          <div className="w-20 h-20 bg-yellow-400/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <Users className="w-10 h-10 text-yellow-400" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-black text-white mb-6 uppercase tracking-wide">
             Encontre Pessoas Para Troca
           </h2>
-          <p className="text-lg text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-            A verdadeira magia do álbum não está em comprá-lo completo, mas sim na jornada e nas conexões. Sugerimos que você <strong>crie grupos no WhatsApp ou Telegram</strong> do seu condomínio, escola ou empresa para facilitar o encontro.
-            Organize "Points de Troca" em praças de alimentação ou clubes aos finais de semana!
+          <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-medium">
+            A verdadeira magia da Copa do Mundo não está em comprar caixas fechadas sozinho em casa, mas sim na emoção da negociação presencial. Esqueça aplicativos avulsos disfuncionais: <strong>nossa plataforma possui Comunidades exclusivas</strong> de colecionadores de alto nível próximas a você.
           </p>
           
-          <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-left max-w-2xl w-full">
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-yellow-400" />
-              Dica de Ouro para Grupos
-            </h3>
-            <p className="text-slate-400">
-              Crie uma planilha no Google Sheets compartilhada ou use aplicativos com os membros do seu grupo. 
-              Ao invés de perguntar "quem tem o Neymar?", os membros podem consultar e ir direto ao alvo. 
-              Isso agiliza as negociações e fortalece as amizades.
-            </p>
-          </div>
+          <button 
+            onClick={() => onNavigate && onNavigate('communities')}
+            className="flex items-center gap-3 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-400 hover:to-blue-400 text-white px-8 py-5 rounded-2xl font-black text-lg md:text-xl uppercase tracking-wider transform hover:scale-105 transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+          >
+            Acessar Nossas Comunidades
+            <ArrowRight className="w-6 h-6 animate-bounce-x" />
+          </button>
         </div>
       </div>
     </div>
