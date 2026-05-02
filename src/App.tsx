@@ -52,12 +52,17 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-xl shadow-black/50 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="p-3 border-b border-slate-800 bg-slate-800/50">
-                  <h4 className="text-sm font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
-                    <Bell className="w-4 h-4" /> Notificações
-                  </h4>
-                </div>
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)}></div>
+                <div className="absolute right-[-20px] sm:right-0 mt-3 w-[calc(100vw-32px)] sm:w-80 max-w-sm bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="p-3 border-b border-slate-800 bg-slate-800/80 flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                      <Bell className="w-4 h-4" /> Notificações
+                    </h4>
+                    <button onClick={() => setShowNotifications(false)} className="text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-700 transition">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                  </div>
                 <div className="max-h-[300px] overflow-y-auto">
                   {pendingRequests.length === 0 ? (
                     <div className="p-4 text-center text-sm text-slate-400">
@@ -96,6 +101,7 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
                   )}
                 </div>
               </div>
+              </>
             )}
           </div>
           
