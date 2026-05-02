@@ -26,11 +26,11 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
         </div>
         <button 
           onClick={onAddClick}
-          className="group flex flex-col items-center justify-center py-4 px-6 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-colors cursor-pointer"
+          className="w-full md:w-auto group flex flex-col items-center justify-center py-3 md:py-4 px-4 md:px-6 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-colors cursor-pointer shrink-0"
         >
-          <div className="text-white flex items-center gap-2 mb-1 group-hover:scale-105 transition-all">
-            <Zap className="w-5 h-5 fill-white" />
-            <span className="text-sm font-bold text-white tracking-wide">ANALISAR NOVO ITEM</span>
+          <div className="text-white flex items-center justify-center gap-2 mb-1 group-hover:scale-105 transition-all">
+            <Zap className="w-4 h-4 md:w-5 md:h-5 fill-white" />
+            <span className="text-sm font-bold text-white tracking-wide truncate">ANALISAR NOVO ITEM</span>
           </div>
         </button>
       </header>
@@ -65,23 +65,23 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
            </div>
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0 border border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white group-hover:rotate-180 transition-transform duration-1000">
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0 border border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white group-hover:rotate-180 transition-transform duration-1000 w-6 h-6 sm:w-8 sm:h-8">
                 <circle cx="12" cy="12" r="10"/><path d="M12 12l3.5 2"/><path d="M12 12l-3.5 2"/><path d="M12 12v-4"/><path d="M8.5 14L5 12"/><path d="M15.5 14l3.5-2"/><path d="M12 8L9.5 5"/><path d="M12 8l2.5-3"/>
               </svg>
             </div>
             <div>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight flex items-center gap-2">
-                Copa 2026 <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" />
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight flex items-center gap-2">
+                Copa 2026 <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" />
               </h3>
-              <p className="text-emerald-50 font-medium md:text-lg opacity-90 max-w-xl text-shadow-sm">
-                Complete seu álbum! Dicas secretas, curiosidades inéditas e point de troca das figurinhas limitadas!
+              <p className="text-emerald-50 text-sm sm:text-base font-medium opacity-90 max-w-xl text-shadow-sm">
+                Complete seu álbum! Dicas, curiosidades e point de troca das figurinhas limitadas!
               </p>
             </div>
           </div>
-          <button className="shrink-0 flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-emerald-950 px-6 py-3 rounded-xl font-black uppercase tracking-wide hover:from-yellow-300 hover:to-yellow-400 transition-colors shadow-xl">
+          <button className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-emerald-950 px-6 py-3 rounded-xl font-black uppercase tracking-wide hover:from-yellow-300 hover:to-yellow-400 transition-colors shadow-xl">
             Ver Especial
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>

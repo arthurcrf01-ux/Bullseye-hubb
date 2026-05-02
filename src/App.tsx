@@ -30,12 +30,12 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
   const pendingRequestsCount = pendingRequests.length;
 
   return (
-    <div className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between shadow-sm">
-       <div className="md:hidden flex items-center gap-2 font-black uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+    <div className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-3 sm:px-6 lg:px-8 py-3 flex items-center justify-between shadow-sm">
+       <div className="md:hidden flex flex-1 items-center font-black uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
          Bullseye
        </div>
-       <div className="hidden md:block"></div>
-       <div className="flex items-center gap-4">
+       <div className="hidden md:block flex-1"></div>
+       <div className="flex items-center gap-2 sm:gap-4">
           <div className="relative">
             <button 
                onClick={() => setShowNotifications(!showNotifications)} 
@@ -54,7 +54,7 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
             {showNotifications && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)}></div>
-                <div className="absolute right-[-20px] sm:right-0 mt-3 w-[calc(100vw-32px)] sm:w-80 max-w-sm bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="fixed left-4 right-4 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-[100%] sm:mt-3 w-[calc(100vw-32px)] sm:w-80 max-w-sm bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="p-3 border-b border-slate-800 bg-slate-800/80 flex items-center justify-between">
                     <h4 className="text-sm font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
                       <Bell className="w-4 h-4" /> Notificações
@@ -105,10 +105,10 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
             )}
           </div>
           
-          <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 py-1.5 px-2 pr-4 rounded-full shadow-inner">
-            <img src={currentUser?.avatarUrl} className="w-7 h-7 rounded-full border border-slate-700 bg-slate-800 object-cover" alt="Avatar"/>
-            <span className="text-sm font-bold truncate max-w-[100px] md:max-w-[150px]">{currentUser?.name}</span>
-            <button onClick={logout} className="ml-2 text-slate-500 hover:text-red-400 transition-colors" title="Sair da conta">
+          <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 py-1.5 px-2 sm:pr-4 rounded-full shadow-inner shrink-0">
+            <img src={currentUser?.avatarUrl} className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-slate-700 bg-slate-800 object-cover" alt="Avatar"/>
+            <span className="text-xs sm:text-sm font-bold truncate max-w-[70px] sm:max-w-[150px]">{currentUser?.name}</span>
+            <button onClick={logout} className="ml-1 sm:ml-2 text-slate-500 hover:text-red-400 transition-colors" title="Sair da conta">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
