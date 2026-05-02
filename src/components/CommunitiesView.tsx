@@ -9,8 +9,10 @@ import { db } from '../lib/firebase';
 
 export function CommunitiesView() {
   const { communities, createCommunity, sendMessage, deleteCommunityMessage, currentUser } = useStore();
-  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
+  const [selectedCommunityId, setSelectedCommunityId] = useState<string | null>(null);
   
+  const selectedCommunity = communities.find(c => c.id === selectedCommunityId) || null;
+
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState('');
   const [newDesc, setNewDesc] = useState('');
@@ -36,25 +38,8 @@ export function CommunitiesView() {
     if (message.trim() && selectedCommunity) {
       await sendMessage(selectedCommunity.id, message);
       setMessage('');
-      
-      // Update local view instance to avoid waiting for re-render if needed, 
-      // though context update should trigger re-render containing the new list.
-      const updatedCommunity = communities.find(c => c.id === selectedCommunity.id);
-      if (updatedCommunity) {
-        setSelectedCommunity(updatedCommunity);
-      }
     }
   };
-
-  // Keep selectedCommunity in sync with context updates
-  React.useEffect(() => {
-    if (selectedCommunity) {
-      const updated = communities.find(c => c.id === selectedCommunity.id);
-      if (updated) {
-        setSelectedCommunity(updated);
-      }
-    }
-  }, [communities]);
 
   if (selectedCommunity) {
     return (
@@ -62,7 +47,7 @@ export function CommunitiesView() {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
         <header className="flex items-center gap-4 p-4 border-b border-white/10 bg-gradient-to-r from-emerald-900/40 to-blue-900/40 shrink-0 relative z-10 backdrop-blur-md">
           <button 
-            onClick={() => setSelectedCommunity(null)}
+            onClick={() => setSelectedCommunityId(null)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
@@ -176,7 +161,7 @@ export function CommunitiesView() {
             className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white h-12 px-6 rounded-2xl font-black uppercase tracking-wider transition-all shadow-md group whitespace-nowrap"
           >
             <Plus className="w-5 h-5 text-emerald-400 group-hover:rotate-90 transition-transform" />
-            NOVO TIME
+            NOVA COMUNIDADE
           </button>
         )}
       </header>
@@ -219,7 +204,7 @@ export function CommunitiesView() {
                 disabled={!newName.trim() || !newDesc.trim()}
                 className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 disabled:opacity-50 text-white font-black uppercase tracking-widest rounded-xl text-sm transition-all shadow-lg"
                >
-                Fundar Grupo
+                Criar Comunidade
               </button>
             </div>
           </div>
@@ -240,7 +225,7 @@ export function CommunitiesView() {
                 key={community.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                onClick={() => setSelectedCommunity(community)}
+                onClick={() => setSelectedCommunityId(community.id)}
                 className="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-3xl p-6 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] group flex flex-col h-48 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -281,7 +266,7 @@ export function CommunitiesView() {
 }
 
 function FriendsList({ friendships, currentUser, onChat }: any) {
-  const { acceptFriendRequest } = useStore();
+  const { acceptFriendRequest, removeFriend } = useStore();
   const [friendUsers, setFriendUsers] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -339,24 +324,55 @@ function FriendsList({ friendships, currentUser, onChat }: any) {
             <div className="flex items-center gap-2">
               {isPending ? (
                 isRequestFromMe ? (
-                  <span className="text-slate-500 text-sm flex items-center gap-1 bg-slate-800 px-3 py-1.5 rounded-full">
-                    <Clock className="w-4 h-4" /> Aguardando
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-500 text-sm flex items-center gap-1 bg-slate-800 px-3 py-1.5 rounded-full">
+                      <Clock className="w-4 h-4" /> Aguardando
+                    </span>
+                    <button 
+                      onClick={() => removeFriend(friendship.id)}
+                      className="bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-sm p-2 rounded-full font-bold transition-colors"
+                      title="Cancelar pedido"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 ) : (
-                  <button 
-                    onClick={() => acceptFriendRequest(friendship.id)}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
-                  >
-                     <Check className="w-4 h-4" /> Aceitar
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => acceptFriendRequest(friendship.id)}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
+                    >
+                       <Check className="w-4 h-4" /> Aceitar
+                    </button>
+                    <button 
+                      onClick={() => removeFriend(friendship.id)}
+                      className="bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-sm p-2 rounded-full font-bold transition-colors"
+                      title="Recusar"
+                    >
+                       <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 )
               ) : (
-                <button 
-                  onClick={() => onChat(friendship.id)}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
-                >
-                   <MessageSquare className="w-4 h-4" /> Chat
-                </button>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => onChat(friendship.id)}
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2"
+                  >
+                     <MessageSquare className="w-4 h-4" /> Chat
+                  </button>
+                  <button 
+                    onClick={() => {
+                      if (window.confirm('Tem certeza que deseja desfazer amizade com ' + user.name + '?')) {
+                        removeFriend(friendship.id);
+                      }
+                    }}
+                    className="bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-sm p-2 rounded-full font-bold transition-colors"
+                    title="Desfazer Amizade"
+                  >
+                     <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               )}
             </div>
           </motion.div>

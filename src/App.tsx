@@ -10,11 +10,57 @@ import { LoginView } from './components/LoginView';
 import { TermsView } from './components/TermsView';
 import { ArticlesView } from './components/ArticlesView';
 import { AboutView } from './components/AboutView';
-import { Target, BookOpen, Shield, Users, LogIn, Info } from 'lucide-react';
+import { Target, BookOpen, Shield, Users, LogIn, Info, Bell, LogOut } from 'lucide-react';
 import { CommunitiesView } from './components/CommunitiesView';
 import { StickersView } from './components/StickersView';
 
 export type ViewState = 'home' | 'collection' | 'add' | 'leaderboard' | 'articles' | 'terms' | 'communities' | 'about' | 'stickers';
+
+function TopBar({ currentView, setCurrentView }: { currentView: string, setCurrentView: (v: ViewState) => void }) {
+  const { currentUser, friendships, logout } = useStore();
+  
+  // Count requests directed TO me that are pending
+  const pendingRequestsCount = friendships.filter(f => 
+    f.status === 'pending' && 
+    f.participants.includes(currentUser?.id || '') && 
+    f.requesterId !== currentUser?.id
+  ).length;
+
+  return (
+    <div className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between shadow-sm">
+       <div className="md:hidden flex items-center gap-2 font-black uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+         Bullseye
+       </div>
+       <div className="hidden md:block"></div>
+       <div className="flex items-center gap-4">
+          <button 
+             onClick={() => {
+               setCurrentView('communities');
+               // Optionally signal open friends list
+             }} 
+             className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+          >
+             {pendingRequestsCount > 0 ? (
+               <>
+                 <Bell className="w-5 h-5 text-emerald-400 animate-pulse" />
+                 <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-slate-900">{pendingRequestsCount}</span>
+               </>
+             ) : (
+               <Bell className="w-5 h-5" />
+             )}
+          </button>
+          
+          <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 py-1.5 px-2 pr-4 rounded-full shadow-inner">
+            <img src={currentUser?.avatarUrl} className="w-7 h-7 rounded-full border border-slate-700 bg-slate-800 object-cover" alt="Avatar"/>
+            <span className="text-sm font-bold truncate max-w-[100px] md:max-w-[150px]">{currentUser?.name}</span>
+            <button onClick={logout} className="ml-2 text-slate-500 hover:text-red-400 transition-colors" title="Sair da conta">
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+       </div>
+    </div>
+  );
+}
 
 function AppContent() {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -53,7 +99,8 @@ function AppContent() {
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto w-full relative pb-20 md:pb-0">
+      <main className="flex-1 overflow-y-auto flex flex-col w-full relative pb-20 md:pb-0">
+        <TopBar currentView={currentView} setCurrentView={setCurrentView} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full min-h-full">
            {currentView === 'home' && <HomeDashboard onAddClick={() => setCurrentView('add')} onNavigate={(v) => setCurrentView(v)} />}
            {currentView === 'collection' && <MyCollection />}

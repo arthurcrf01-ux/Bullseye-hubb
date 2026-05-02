@@ -5,7 +5,7 @@ let aiClient: GoogleGenAI | null = null;
 function getAIClient() {
   if (!aiClient) {
     // Tenta pegar a chave do Vite (Netlify) ou do process.env (AI Studio)
-    const key = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || 
+    const key = ((import.meta as any).env?.VITE_GEMINI_API_KEY) || 
                 (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : undefined);
     
     if (!key) {

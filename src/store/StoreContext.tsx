@@ -21,6 +21,7 @@ interface StoreState {
   deleteCommunityMessage: (communityId: string, messageId: string) => Promise<void>;
   sendFriendRequest: (targetUserId: string) => Promise<void>;
   acceptFriendRequest: (friendshipId: string) => Promise<void>;
+  removeFriend: (friendshipId: string) => Promise<void>;
   sendDirectMessage: (friendshipId: string, text: string) => Promise<void>;
 }
 
@@ -241,6 +242,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }, { merge: true });
   };
 
+  const removeFriend = async (friendshipId: string) => {
+    if (!currentUser) return;
+    await deleteDoc(doc(db, 'friendships', friendshipId));
+  };
+
   const sendDirectMessage = async (friendshipId: string, text: string) => {
     if (!currentUser) return;
     const msgId = uuidv4();
@@ -257,7 +263,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     <StoreContext.Provider value={{
       items, currentUser, leaderboard, communities, friendships, isLoaded, 
       addItem, deleteItem, login, logout, createCommunity, sendMessage, deleteCommunityMessage,
-      sendFriendRequest, acceptFriendRequest, sendDirectMessage
+      sendFriendRequest, acceptFriendRequest, removeFriend, sendDirectMessage
     }}>
       {children}
     </StoreContext.Provider>
