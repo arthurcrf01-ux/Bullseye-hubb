@@ -154,9 +154,9 @@ function AppContent() {
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto flex flex-col w-full relative pb-20 md:pb-0">
+      <main className="flex-1 overflow-y-auto w-full relative pb-20 md:pb-0 block">
         <TopBar currentView={currentView} setCurrentView={setCurrentView} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full min-h-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full min-h-[calc(100vh-16rem)] relative z-10">
            {currentView === 'home' && <HomeDashboard onAddClick={() => setCurrentView('add')} onNavigate={(v) => setCurrentView(v)} />}
            {currentView === 'collection' && <MyCollection />}
            {currentView === 'add' && <AddItemView onComplete={() => setCurrentView('collection')} />}

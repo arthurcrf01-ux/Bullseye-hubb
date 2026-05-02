@@ -128,13 +128,62 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
             <div className="flex items-center gap-3">
               <img src={topMonthly.avatarUrl} alt="Avatar" className="w-10 h-10 rounded-full border border-indigo-400" />
               <div>
-                <h1 className="text-xl font-bold">{topMonthly.name}</h1>
+                <h1 className="text-xl font-bold truncate max-w-[150px]">{topMonthly.name}</h1>
                 <div className="text-sm font-medium text-indigo-400">{topMonthly.points} PTS</div>
               </div>
             </div>
           </div>
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-600/20 rounded-full blur-3xl"></div>
         </motion.div>
+      </div>
+
+      {/* Itens Recentes */}
+      <div className="pt-4 pb-8">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-bold text-white uppercase tracking-widest flex items-center gap-2">
+              <Album className="w-5 h-5 text-indigo-400" />
+              Últimos Itens Analisados
+          </h3>
+          <button onClick={() => onNavigate('collection')} className="text-sm text-indigo-400 hover:text-indigo-300 font-bold uppercase tracking-widest transition-colors">
+            Ver Acervo {'>'}
+          </button>
+        </div>
+        
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {items.slice(0, 3).map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex cursor-pointer hover:border-indigo-500/50 transition-colors"
+                  onClick={() => onNavigate('collection')}
+                >
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 bg-slate-800 shrink-0 relative overflow-hidden">
+                    <img src={item.photoBase64} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  </div>
+                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-center">
+                      <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400 mb-1">{item.rarityCategory}</span>
+                      <h4 className="font-bold text-slate-100 text-sm line-clamp-2 leading-tight">{item.name}</h4>
+                      <span className="text-xs text-slate-500 font-medium mt-1">+{item.rarityScore} pts</span>
+                  </div>
+                </motion.div>
+              ))}
+          </div>
+        ) : (
+          <div className="p-8 border border-dashed border-slate-700 rounded-2xl flex flex-col items-center justify-center text-center bg-slate-900/30">
+            <Zap className="w-8 h-8 text-slate-600 mb-3" />
+            <h4 className="text-slate-300 font-bold mb-1">Nenhum item analisado ainda</h4>
+            <p className="text-sm text-slate-500 mb-4 max-w-sm">Adicione seu primeiro item para descobrir seu valor e raridade.</p>
+            <button 
+                onClick={onAddClick}
+                className="px-5 py-2 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 rounded-full font-bold uppercase tracking-widest text-xs transition-colors"
+            >
+                CADASTRAR ITEM
+            </button>
+          </div>
+        )}
       </div>
 
     </div>
