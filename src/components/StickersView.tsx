@@ -7,10 +7,10 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
       <header className="mb-12 text-center relative px-4">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-lg bg-emerald-500/20 blur-[100px] rounded-full pointer-events-none"></div>
         <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-yellow-400 to-indigo-500 mb-6 uppercase tracking-tight leading-tight">
-          Copa 2026:<br /> A Dinâmica do Colecionismo
+          Copa 2026:<br /> A Febre das Figurinhas
         </h1>
         <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)"}}>
-          O guia abrangente e analítico para estrategistas do universo de cromos. Compreenda a escassez matemática, maximize o valor do seu acervo e conecte-se com a elite do colecionismo sul-americano e global.
+          Tudo o que você precisa saber para se tornar um verdadeiro mestre das figurinhas! Aprenda as melhores dicas para encontrar as mais raras, proteger seus cromos brilhantes e fazer trocas incríveis para completar seu álbum bem mais rápido.
         </p>
       </header>
 
@@ -22,17 +22,17 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
         <div className="flex-1 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-widest mb-6">
             <Users className="w-4 h-4" />
-            Ecossistema de Trocas
+            Nossos Encontros
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-6 uppercase tracking-wide leading-tight">
-            Encontre Colecionadores e<br className="hidden lg:block"/> Estabeleça Parcerias
+            Encontre Amigos e<br className="hidden lg:block"/> Faça Trocas Incríveis
           </h2>
           <div className="space-y-4 text-slate-300 mb-8 font-medium leading-relaxed">
             <p>
-              A verdadeira essência do colecionismo não reside na abertura solitária de pacotes, mas na complexa teia de sociabilidade e negociação. Num mercado onde a distribuição de cromos obedece a rigorosos algoritmos de raridade estipulados pelas editoras globais, o escambo organizado torna-se a estratégia financeira e logística mais viável.
+              A parte mais legal de colecionar não é apenas abrir os pacotes sozinho no seu quarto, mas sim a grande aventura de se juntar com os amigos para ver quem tirou as melhores! Além disso, a gente sabe que depender apenas da sorte na hora de comprar os pacotinhos na banca pode ficar bem caro e demorado. Por esse motivo, as melhores coleções são sempre completadas através de excelentes trocas.
             </p>
             <p>
-              Nossa infraestrutura tecnológica atua como uma ponte direta, conectando as suas necessidades em tempo real a praças de encontro e grupos de negociação de alta confiabilidade. Descarte métodos obsoletos e adentre as nossas comunidades exclusivas, que contam com moderação dedicada para mitigar riscos de fraudes e garantir trocas justas estruturadas na avaliação profissional dos exemplares.
+              Em nosso aplicativo, você não precisa ficar perdidão procurando onde a galera está se reunindo. Nós desenvolvemos uma plataforma especial que mapeia os melhores grupos e pontos de troca na sua região. Venha fazer parte de nossas queridas comunidades exclusivas. Lá você encontra um ambiente super animado e organizado para trocar o seu monte de repetidas da melhor forma possível, conhecendo outros colecionadores tão fantásticos quanto você!
             </p>
           </div>
           
@@ -57,7 +57,7 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
       <div className="text-center mb-10 mt-12">
         <h2 className="text-2xl md:text-3xl font-black text-slate-200 uppercase tracking-widest flex items-center justify-center gap-3">
           <BookMarked className="w-6 h-6 text-yellow-500" />
-          O Guia Definitivo e Científico
+          O Guia Secreto do Colecionador
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent mx-auto mt-4"></div>
       </div>
@@ -70,19 +70,19 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
             <div className="p-3 bg-slate-800 rounded-xl border border-slate-600">
               <LineChart className="w-6 h-6 text-yellow-400" />
             </div>
-            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">Escassez Computada e Avaliação (Grading)</h3>
+            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">Os Segredos das Figurinhas Super Raras</h3>
           </div>
           
           <div className="space-y-4 text-slate-300 font-medium leading-relaxed relative z-10 text-[15px] md:text-[16px]">
             <p>
-              Com a inédita organização baseada em sede tripla (englobando Estados Unidos, México e Canadá), a estrutura documental do livro ilustrado correspondente à temporada de 2026 foi irremediavelmente expandida. Este crescimento dimensional precisou acomodar um vasto segmento de natureza institucional, incorporando projetos arquitetônicos de luxo, símbolos de sedes turísticas e mascotes oficias. Tal fenômeno diluiu substancialmente a densidade de páginas ativamente dedicadas aos elencos de fato, produzindo uma externalidade crítica no mercado: a elevação não planejada, porém aguda, da raridade matemática associada a atletas de elite.
+              Nesta edição incrivelmente histórica, a Copa do Mundo vai acontecer em três países bem grandes ao mesmo tempo: Estados Unidos, Canadá e México! Sabem o que isso muda? O nosso amado álbum fica cheio de páginas extras maravilhosas com fotos artísticas dos modernos estádios, super pôsteres vibrantes de todas as cidades e imagens descoladas das mascotes espalhadas pelos cantos. Como tem muito mais tipos diferentes de figurinhas sendo impressas na fábrica, aquela sua carta especial de jogador que você tanto quer pode demorar um pouco a mais para aparecer no seu pacote.
             </p>
             <p>
-              No que concerne aos ativos estéticos peculiares — especialmente os cromos lendários texturizados, comumente categorizados pelas divisões Extra Stickers ou Variantes Numeradas —, o cenário ganha contornos de complexidade acentuada. Empregando rotinas algorítmicas de cunho probabilístico, a produtora matriz (tradicionalmente referenciada como Panini ou suas associadas diretas) insere estes exemplares de forma pseudoaleatória nas caixas de distribuição do varejo.
+              Ao abrir um pacote, você rapidamente percebe que existem cromos super coloridos e brilhantes. Mas existe algo ainda mais mágico: as lendárias "Extra Stickers" (figurinhas extras lendárias). Essas cartas especialíssimas, algumas com charmosas bordinhas na cor Ouro, Prata, Bronze e até mesmo Vinho Cobre, são verdadeiros diamantes do colecionismo. Elas são muito raríssimas, e a emoção de tirar uma de um craque camisa 10 nos primeiros dias é contagiante — muitos apaixonados chegam a oferecer pilhas enormes de outras cartas em troca de uma única figurinha dourada super desejada dessas!
             </p>
             <div className="bg-slate-800/80 border-l-4 border-yellow-500 p-5 rounded-r-xl mt-6 shadow-inner">
-              <strong className="text-white block mb-2 text-lg">Diretriz Crítica de Preservação Patrimonial:</strong>
-              <span className="text-sm md:text-base">Nunca proceda com a afixação primária de um ativo caso o exame ocular inicial sugira atributos de alta raridade (como brilhos prismáticos ou numerações reduzidas nas margens de impressão). O mercado livre avaliador (Grading) documenta de modo irrevogável que o mínimo desgaste, como a remoção precoce da película traseira original ('peel'), a geração deliberada de microfissuras limítrofes, ou riscos de desgaste em superfície reduzem a cotação financeira de colecionáveis estelares a um décimo de sua capacidade nativa de valorização.</span>
+              <strong className="text-white block mb-2 text-lg">Proteja Seu Maior Tesouro (Grading):</strong>
+              <span className="text-sm md:text-base">Você abriu o pacote e voou uma "Legend" super brilhante para a sua mão? Calma aí e respire fundo antes de arrancar a parte de trás para grudar na página! No mundão do colecionismo de alto nível, os maiores caçadores de raridades costumam mandar essas figurinhas valiosíssimas para o "Grading", que é uma avaliação técnica muito rigorosa para verificar cada bordinha não amassada. Se você colar no papel ou amassar só um pouquinho as pontas do papelão, ela perde bastante do charme e do seu raro valor. Em vez disso, coloque-a com cuidado num protetorzinho limpo (um "sleeve" de plástico flexível). Desse jeito, você a guarda perfeita e mantém os grandes caçadores com os olhos brilhando cheios de inveja do seu valioso tesouro achado na sorte!</span>
             </div>
           </div>
         </div>
@@ -94,29 +94,29 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
              <div className="p-3 bg-slate-800 rounded-xl border border-slate-600">
               <ShieldCheck className="w-6 h-6 text-blue-400" />
             </div>
-            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">Psicologia de Mercado e Estratégia de Barganha</h3>
+            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">Estratégias Geniais na Hora da Troca</h3>
           </div>
           
           <div className="space-y-4 text-slate-300 font-medium leading-relaxed relative z-10 text-[15px] md:text-[16px]">
             <p>
-              A análise temporal da economia das trocas revela um alto grau de vulnerabilidade psicológica entre os colecionadores novatos. Os parâmetros balizadores, muitas vezes, seguem uma lógica empírica batizada entre os peritos como <strong>"Lei da Especulação Inicial"</strong>. Ao longo das quatro primeiras semanas contadas a partir do faturamento dos novos volumes estipulado em catálogo, a ânsia incontrolável pelo vislumbre de cromos brilhantes gera inflacionamentos irrisórios da ordem de dois a três dígitos percentuais contra cromos convencionais.
+              Vocês já repararam na loucura divertida que acontece na pracinha ou em frente da banca logo no primeiro final de semana em que o novo álbum saiu para nós colecionarmos? Os adultos e meninos chamam isso de "Febre da Prateleira Quente". Com a euforia tomando conta, os colecionadores novatos ficam doidinhos e começam a propor negócios não muito bons; eles tentam dar doze repetidas de jogadores normais e ainda alguns escudinhos brilhosos apenas para garantir um holograma qualquer. O segredo? Ter bastante paciência contra toda essa fome inicial!
             </p>
             <p>
-              Sob tais circunstâncias, observa-se que indivíduos desprevenidos ou excessivamente eufóricos procuram incessantemente consolidar seu espólio de coleções, desestruturando qualquer fundamento tático duradouro. A atitude adequada a ser adotada por um estrategista meticuloso é a retenção estratégica. Em dias iniciais, amealhe reservas de inventário em massa com o repasse metódico das repetições comuns para jogadores mais velozes.
+              A melhor jogada mestre de um veterano colecionador é justamente o pensamento de longo prazo. Passe os seus dias pioneiros somente focado em juntar muito volume sem se desesperar pelas mais lindas. Ao invés de tentar logo completar as fileiras da sua seleção predileta nos apuros da concorrência, use e guarde as suas valiosas repetidas até o furor original acalmar. Conforme acabam os meses, a multidão começará a ficar ansiosa desesperadamente atrás dos cromos basiquinhos simples com pontuações bem rotineiras para preencher os buraquinhos que faltam aos montes no papel, e os seus antigos bolinhos normais acabarão valendo as trocas maravilhosamente raras e brilhantes dos seus maiores sonhos.
             </p>
             <ul className="list-none pl-0 mt-6 space-y-4">
               <li className="flex items-start gap-4 p-4 bg-slate-800/40 rounded-xl border border-slate-700">
                  <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 font-bold border border-blue-500/40 mt-0.5">1</div>
                  <div>
-                  <strong className="text-white block">Microgestão Geográfica:</strong> 
-                  <span className="text-sm md:text-base">Delegação menores – ou advindas de cenários onde as próprias logísticas de fábrica determinam um controle muito mais frugal do limite de tiragem por milhas rodadas (em especial Ásia, Oceania ou certas partes da África Setentrional) – configuram gargalos seríssimos de produção. Não as despreze!</span>
+                  <strong className="text-white block">Atenção com Seleções Pouco Famosas:</strong> 
+                  <span className="text-sm md:text-base">Muitas vezes, sem avisar quase nada de ninguém, a fábrica que produz as cartinhas acaba limitando a quantidade dos adesivos e cromos impressos referentes a equipes esportivas e nações não muito famosas. Eles acabam ficando espremidos em caixas distantes. Não esnobe e nem perca essas cartas tão pouco valorizadas no início; elas viram autênticas pratinhas escondidas nos meses finais, cruciais no escambo com outros experientes!</span>
                  </div>
               </li>
               <li className="flex items-start gap-4 p-4 bg-slate-800/40 rounded-xl border border-slate-700">
                  <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 font-bold border border-blue-500/40 mt-0.5">2</div>
                  <div>
-                  <strong className="text-white block">Inventário Dinâmico Sanitizado:</strong> 
-                  <span className="text-sm md:text-base">Mantenha em sua posse catálogos portáteis ("binders") alocando os excedentes numéricamente e com extrema clareza. Executivos desse mercado buscam confiabilidade primária na aparência sistêmica. Negócios velozes acontecem com mais regularidade quando há higienização na demonstração dos recursos visuais à mão.</span>
+                  <strong className="text-white block">Um Monte Organizado é um Monte Desejado:</strong> 
+                  <span className="text-sm md:text-base">Cuidado muito severo com aquele imenso bolinho amassado jogado inteiro no fundo bolso! Todo perito gosta mesmo é de encontrar um outro amigo com suas figurinhas repetidas super bem armazenadas; de preferência bem cuidadinhas através do uso elegante do elastiquinho ou até organizadas lindamente de cem em cem numa pastinha charmosa. Com essa elegância de exposição os seus negócios andam três vezes mais ligeiros do que qualquer baguncinha espalhada que chateia os olhos e os caçadores por aí.</span>
                  </div>
               </li>
             </ul>
@@ -126,4 +126,5 @@ export function StickersView({ onNavigate }: { onNavigate?: (view: string) => vo
     </div>
   );
 }
+
 
