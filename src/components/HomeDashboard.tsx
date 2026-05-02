@@ -39,27 +39,50 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 rounded-3xl p-8 relative overflow-hidden shadow-2xl cursor-pointer hover:scale-[1.01] transition-transform group"
+        className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-800 rounded-3xl p-8 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.3)] cursor-pointer hover:shadow-[0_0_60px_rgba(16,185,129,0.5)] hover:scale-[1.02] transition-all group border border-emerald-500/50 flex flex-col justify-center min-h-[160px]"
         onClick={() => onNavigate('stickers')}
       >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-        <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+        {/* Field Lines overlay */}
+        <div className="absolute inset-0 opacity-20 flex pointer-events-none">
+          <div className="w-1/2 border-r-2 border-white/50 h-full relative">
+             <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 border-2 border-white/50 rounded-full"></div>
+             <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[6px] w-[2px] h-[2px] bg-white rounded-full"></div>
+             <div className="absolute top-1/4 right-0 w-16 h-1/2 border-2 border-white/50 border-r-0 translate-x-px"></div>
+          </div>
+        </div>
+        
+        {/* Abstract floating stickers / shapes */}
+        <div className="absolute -right-4 top-1 opacity-40 transform rotate-12 group-hover:rotate-45 group-hover:scale-110 transition-all duration-700 hidden sm:flex">
+          <div className="w-20 h-28 bg-yellow-400 rounded-md border-4 border-white flex flex-col items-center justify-center shadow-2xl">
+            <div className="w-10 h-10 rounded-full border-2 border-white/50 mb-2"></div>
+            <div className="w-12 h-2 bg-white/50 rounded-sm"></div>
+          </div>
+        </div>
+        <div className="absolute right-24 -bottom-8 opacity-30 transform -rotate-12 group-hover:-rotate-45 transition-all duration-700 hidden sm:flex">
+           <div className="w-20 h-28 bg-blue-500 rounded-md border-4 border-white flex flex-col items-center justify-center shadow-2xl">
+            <div className="w-10 h-10 rounded-full border-2 border-white/50 mb-2"></div>
+            <div className="w-12 h-2 bg-white/50 rounded-sm"></div>
+           </div>
+        </div>
+
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-6">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0">
-              <Album className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0 border border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white group-hover:rotate-180 transition-transform duration-1000">
+                <circle cx="12" cy="12" r="10"/><path d="M12 12l3.5 2"/><path d="M12 12l-3.5 2"/><path d="M12 12v-4"/><path d="M8.5 14L5 12"/><path d="M15.5 14l3.5-2"/><path d="M12 8L9.5 5"/><path d="M12 8l2.5-3"/>
+              </svg>
             </div>
             <div>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight">
-                Álbum da Copa 2026
+              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-tight flex items-center gap-2">
+                Copa 2026 <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" />
               </h3>
-              <p className="text-emerald-50 font-medium md:text-lg opacity-90 max-w-xl">
-                Dicas secretas, curiosidades das exclusivas e encontre grupos para trocar as suas repetidas!
+              <p className="text-emerald-50 font-medium md:text-lg opacity-90 max-w-xl text-shadow-sm">
+                Complete seu álbum! Dicas secretas, curiosidades inéditas e point de troca das figurinhas limitadas!
               </p>
             </div>
           </div>
-          <button className="shrink-0 flex items-center gap-2 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold uppercase tracking-wide hover:bg-emerald-50 transition-colors">
-            Saiba Mais
+          <button className="shrink-0 flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-emerald-950 px-6 py-3 rounded-xl font-black uppercase tracking-wide hover:from-yellow-300 hover:to-yellow-400 transition-colors shadow-xl">
+            Ver Especial
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
