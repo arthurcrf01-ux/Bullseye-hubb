@@ -18,6 +18,7 @@ interface StoreState {
   logout: () => Promise<void>;
   createCommunity: (name: string, description: string) => Promise<void>;
   sendMessage: (communityId: string, text: string) => Promise<void>;
+  deleteCommunityMessage: (communityId: string, messageId: string) => Promise<void>;
   sendFriendRequest: (targetUserId: string) => Promise<void>;
   acceptFriendRequest: (friendshipId: string) => Promise<void>;
   sendDirectMessage: (friendshipId: string, text: string) => Promise<void>;
@@ -195,6 +196,20 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const deleteCommunityMessage = async (communityId: string, messageId: string) => {
+    if (!currentUser) return;
+    // We do not check if it's the current user's message here, relying on UI or Security Rules
+    await deleteDoc(doc(db, 'communities', communityId, 'messages', messageId));
+    
+    // Manually remove from local state
+    setCommunities(prev => prev.map(c => {
+      if (c.id === communityId) {
+        return { ...c, messages: c.messages.filter(m => m.id !== messageId) };
+      }
+      return c;
+    }));
+  };
+
   const sendFriendRequest = async (targetUserId: string) => {
     if (!currentUser) return;
     const participants = [currentUser.id, targetUserId].sort();
@@ -241,7 +256,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   return (
     <StoreContext.Provider value={{
       items, currentUser, leaderboard, communities, friendships, isLoaded, 
-      addItem, deleteItem, login, logout, createCommunity, sendMessage,
+      addItem, deleteItem, login, logout, createCommunity, sendMessage, deleteCommunityMessage,
       sendFriendRequest, acceptFriendRequest, sendDirectMessage
     }}>
       {children}
