@@ -112,6 +112,7 @@ service cloud.firestore {
       allow list: if isSignedIn() && isValidId(communityId) && resource.data.createdAt >= 0;
 
       allow create: if isSignedIn() && isValidId(communityId) && isValidId(messageId) && isValidMessage(incoming()) && exists(/databases/$(database)/documents/communities/$(communityId));
+      allow delete: if isSignedIn() && isValidId(communityId) && isValidId(messageId) && resource.data.userId == request.auth.uid;
     }
 
     match /friendships/{friendshipId} {
@@ -130,6 +131,8 @@ service cloud.firestore {
                        incoming().createdAt == existing().createdAt &&
                        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) &&
                        incoming().status == 'accepted';
+
+      allow delete: if isSignedIn() && isValidId(friendshipId) && request.auth.uid in resource.data.participants;
     }
 
     match /friendships/{friendshipId}/messages/{messageId} {

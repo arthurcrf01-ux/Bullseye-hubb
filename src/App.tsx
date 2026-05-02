@@ -17,14 +17,17 @@ import { StickersView } from './components/StickersView';
 export type ViewState = 'home' | 'collection' | 'add' | 'leaderboard' | 'articles' | 'terms' | 'communities' | 'about' | 'stickers';
 
 function TopBar({ currentView, setCurrentView }: { currentView: string, setCurrentView: (v: ViewState) => void }) {
-  const { currentUser, friendships, logout } = useStore();
+  const { currentUser, friendships, leaderboard, acceptFriendRequest, removeFriend, logout } = useStore();
+  const [showNotifications, setShowNotifications] = useState(false);
   
-  // Count requests directed TO me that are pending
-  const pendingRequestsCount = friendships.filter(f => 
+  // Requests directed TO me that are pending
+  const pendingRequests = friendships.filter(f => 
     f.status === 'pending' && 
     f.participants.includes(currentUser?.id || '') && 
     f.requesterId !== currentUser?.id
-  ).length;
+  );
+  
+  const pendingRequestsCount = pendingRequests.length;
 
   return (
     <div className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between shadow-sm">
@@ -33,22 +36,68 @@ function TopBar({ currentView, setCurrentView }: { currentView: string, setCurre
        </div>
        <div className="hidden md:block"></div>
        <div className="flex items-center gap-4">
-          <button 
-             onClick={() => {
-               setCurrentView('communities');
-               // Optionally signal open friends list
-             }} 
-             className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
-          >
-             {pendingRequestsCount > 0 ? (
-               <>
-                 <Bell className="w-5 h-5 text-emerald-400 animate-pulse" />
-                 <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-slate-900">{pendingRequestsCount}</span>
-               </>
-             ) : (
-               <Bell className="w-5 h-5" />
-             )}
-          </button>
+          <div className="relative">
+            <button 
+               onClick={() => setShowNotifications(!showNotifications)} 
+               className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+            >
+               {pendingRequestsCount > 0 ? (
+                 <>
+                   <Bell className="w-5 h-5 text-emerald-400 animate-pulse" />
+                   <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-slate-900">{pendingRequestsCount}</span>
+                 </>
+               ) : (
+                 <Bell className="w-5 h-5" />
+               )}
+            </button>
+
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-xl shadow-black/50 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="p-3 border-b border-slate-800 bg-slate-800/50">
+                  <h4 className="text-sm font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                    <Bell className="w-4 h-4" /> Notificações
+                  </h4>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto">
+                  {pendingRequests.length === 0 ? (
+                    <div className="p-4 text-center text-sm text-slate-400">
+                      Nenhuma notificação no momento.
+                    </div>
+                  ) : (
+                    <div className="p-2 space-y-2">
+                      {pendingRequests.map(req => {
+                        const requester = leaderboard.find(u => u.id === req.requesterId);
+                        return (
+                          <div key={req.id} className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                             <div className="flex items-center gap-2 mb-2">
+                               <img src={requester?.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${req.requesterId}`} className="w-8 h-8 rounded-full border border-slate-600 bg-slate-700" alt="avatar" />
+                               <div className="text-sm">
+                                 <span className="font-bold text-white">{requester?.name || 'Alguém'}</span> quer ser seu amigo(a).
+                               </div>
+                             </div>
+                             <div className="flex gap-2 mt-2">
+                               <button 
+                                 onClick={() => acceptFriendRequest(req.id)}
+                                 className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 rounded-lg transition-colors"
+                               >
+                                 Aceitar
+                               </button>
+                               <button 
+                                 onClick={() => removeFriend(req.id)}
+                                 className="flex-1 bg-slate-700 hover:bg-red-500 hover:text-white text-slate-300 text-xs font-bold py-1.5 rounded-lg transition-colors"
+                               >
+                                 Recusar
+                               </button>
+                             </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
           
           <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 py-1.5 px-2 pr-4 rounded-full shadow-inner">
             <img src={currentUser?.avatarUrl} className="w-7 h-7 rounded-full border border-slate-700 bg-slate-800 object-cover" alt="Avatar"/>
