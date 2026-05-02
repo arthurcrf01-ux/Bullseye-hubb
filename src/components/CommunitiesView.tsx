@@ -173,9 +173,9 @@ export function CommunitiesView() {
           className="bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-emerald-500/30 rounded-3xl p-6 md:p-8 mb-8 shadow-[0_0_30px_rgba(16,185,129,0.1)] relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="flex items-center gap-3 mb-6">
-            <Star className="w-6 h-6 text-emerald-400" />
-            <h3 className="text-2xl font-black text-white uppercase tracking-tight">Criar Novo Ponto de Troca</h3>
+          <div className="flex items-start sm:items-center gap-3 mb-6">
+            <Star className="w-6 h-6 text-emerald-400 mt-1 sm:mt-0 shrink-0" />
+            <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight leading-tight">Encontre colecionadores, faça pontos trocas e se diverta em nossas comunidades</h3>
           </div>
           
           <div className="space-y-5 relative z-10">
