@@ -30,7 +30,7 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
   };
 
   const textPart = {
-    text: "Analyze this item from a collector's standpoint. Provide a catchy name for the item if none is obvious. Give it a rarity score from 1 to 100, provide a brief description of why it has this rarity, and provide a real-world estimated monetary value in Brazilian Reais (BRL) or US Dollars (USD) (e.g., 'R$ 50 - R$ 100', 'U$ 20.00 - U$ 45.00'). Always make it explicitly clear in the string that it is an estimate (e.g., 'Valor Estimado: R$ 50'). IMPORTANT: The 'name', 'description', and 'estimatedValue' must be written in English. However, for the 'rarityCategory', you must strictly classify the item into exactly one of these five Portuguese categories: 'Comum', 'Incomum', 'Raro', 'Épico', 'Lendário'.",
+    text: "Você é um mestre curador e avaliador de renome mundial em itens colecionáveis, antiguidades e raridades, com conhecimento enciclopédico sobre mercados de leilões, card games, moedas, brinquedos antigos e memorabilia. Analise a imagem deste item com olhos de especialista. Identifique-o com a maior precisão possível (marca, modelo, edição, ano aproximado, se aplicável). Avalie fatores como estado de conservação (grading), desgaste, marcas do tempo, tiragem e demanda histórica. Dê uma pontuação de raridade de 1 a 100. Categorize-o ESTRITAMENTE em uma destas opções: 'Comum', 'Incomum', 'Raro', 'Épico', 'Lendário'. Crie uma descrição detalhada justificando sua avaliação (por que é raro/comum, detalhes percebidos na foto que aumentam ou reduzem o valor, contexto histórico). Estime o valor de mercado atual em BRL (Reais) ou USD (Dólares). TODO O SEU RETORNO DEVE SER EM PORTUGUÊS (PT-BR).",
   };
 
   try {
@@ -39,29 +39,30 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
       contents: { parts: [imagePart, textPart] },
       config: {
         temperature: 0.1,
+        systemInstruction: "Atue como um Especialista Avaliador de Colecionáveis de alto nível. Seu objetivo é extrair o máximo de detalhes visuais da imagem para identificar o objeto, seu período histórico, fabricante (se possível) e estado de conservação. Forneça avaliações precisas, utilizando jargões de colecionadores (ex: mint condition, wear and tear, centering, toning) quando apropriado, e justifique a raridade com base em fatores de mercado tangíveis. Seja imparcial e analítico.",
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
             name: {
               type: Type.STRING,
-              description: "The name of the item in English.",
+              description: "O nome exato ou mais provável do item (ex: Charizard 1ª Edição Base Set, Moeda de 50 Centavos 1998 com defeito, etc).",
             },
             rarityCategory: {
               type: Type.STRING,
-              description: "Must be exactly one of the Portuguese labels: Comum, Incomum, Raro, Épico, Lendário.",
+              description: "Deve ser OBRIGATORIAMENTE uma destas: Comum, Incomum, Raro, Épico, Lendário.",
             },
             rarityScore: {
               type: Type.NUMBER,
-              description: "A score from 1 to 100 representing its rarity.",
+              description: "Uma pontuação de raridade e desejo de mercado, variando de 1 a 100.",
             },
             description: {
               type: Type.STRING,
-              description: "A short paragraph in English explaining the item's features and why it received this rarity rating.",
+              description: "Uma análise detalhada das características visuais, estado de conservação e contexto histórico que justificam a avaliação e o valor estimado.",
             },
             estimatedValue: {
               type: Type.STRING,
-              description: "A real-world estimated value.",
+              description: "Valor estimado de mercado (ex: 'R$ 150,00 - R$ 300,00' ou 'U$ 2.000,00+').",
             },
           },
           required: ["name", "rarityCategory", "rarityScore", "description", "estimatedValue"],
