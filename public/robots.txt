@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bullseyecollectors.netlify.app/sitemap.xml
