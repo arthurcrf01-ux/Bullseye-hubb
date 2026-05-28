@@ -35,7 +35,7 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-2.5-pro",
       contents: { parts: [imagePart, textPart] },
       config: {
         temperature: 0.1,
@@ -94,6 +94,27 @@ export async function analyzeItemRarity(base64Image: string, expectedMimeType: s
     if (error.message && error.message.includes("VITE_GEMINI_API_KEY")) {
       throw error; 
     }
-    throw new Error("Falha ao analisar o item pelo Gemini. (" + (error.message || "Erro desconhecido") + ")");
+    
+    let friendlyMessage = "Erro desconhecido ao contatar a IA.";
+    if (error.message) {
+      if (error.message.includes("503") || error.message.includes("high demand") || error.message.includes("UNAVAILABLE")) {
+        friendlyMessage = "Nossos servidores de IA estão com alta demanda no momento. Por favor, tente analisar novamente em instantes.";
+      } else if (error.message.includes("429") || error.message.includes("quota")) {
+        friendlyMessage = "Limite de análises atingido. Por favor, aguarde um pouco antes de tentar novamente.";
+      } else {
+        try {
+          const parsed = JSON.parse(error.message);
+          if (parsed.error && parsed.error.message) {
+            friendlyMessage = parsed.error.message;
+          } else {
+            friendlyMessage = error.message;
+          }
+        } catch(e) {
+             friendlyMessage = error.message;
+        }
+      }
+    }
+    
+    throw new Error("Falha na análise: " + friendlyMessage);
   }
 }
