@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '../store/StoreContext';
 import { Trophy, ArrowRight, Zap, Star, Target, Album } from 'lucide-react';
 import { motion } from 'motion/react';
-import headerArt from '../assets/images/header_collectibles_art_1780151622185.png';
+import headerArt from '../assets/images/vector_miniature_bullseye_card_1780160299601.png';
 
 export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => void; onNavigate: (view: string) => void }) {
   const { currentUser, items, leaderboard } = useStore();
@@ -15,37 +15,50 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       {/* Header */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-8 pt-4 relative">
-        <div className="relative z-10 text-left">
+      <header className="relative flex flex-col md:flex-row justify-between items-start gap-8 pb-10 pt-6 border-b border-slate-800/50">
+        
+        {/* Subtle Decorative Art in the background/right for Desktop */}
+        <div className="absolute right-0 top-0 bottom-0 md:w-1/2 opacity-30 pointer-events-none hidden md:flex items-center justify-end z-0" style={{ maskImage: 'linear-gradient(to left, black, transparent)', WebkitMaskImage: 'linear-gradient(to left, black, transparent)' }}>
+          <img 
+            src={headerArt} 
+            alt="Ilustração Colecionáveis" 
+            className="h-full max-h-[160px] w-auto object-contain mix-blend-screen opacity-90 transition-opacity duration-1000"
+          />
+        </div>
+
+        <div className="relative z-10 text-left flex-1">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-14 h-14 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 animate-pulse-slow shadow-[0_0_20px_rgba(79,70,229,0.3)]">
-              <Target className="text-white w-8 h-8" />
+            <div className="w-10 h-10 rounded-full bg-indigo-600/20 text-indigo-400 flex items-center justify-center flex-shrink-0 animate-pulse-slow border border-indigo-500/30">
+              <Target className="w-5 h-5" />
             </div>
-            <h2 className="text-sm font-bold tracking-widest text-slate-500 uppercase">Bullseye Dashboard</h2>
+            <h2 className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Bullseye</h2>
           </div>
           
-          <div className="flex gap-4 items-end mb-1">
-             <img 
-               src={headerArt} 
-               alt="Colecionáveis" 
-               className="h-16 md:h-20 w-auto object-contain opacity-80 mix-blend-screen pointer-events-none self-end scale-110 origin-bottom-left ml-[-8px] md:ml-[-12px]" 
-             />
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-2">
             Bem-vindo,<br/>
             <span className="text-indigo-400">{currentUser.name}</span>.
           </h1>
+          <p className="text-slate-400 max-w-md mt-4 text-sm leading-relaxed font-medium">
+            Gerencie sua coleção de miniaturas, cartas, figurinhas e moedas. Descubra o valor do seu acervo com nossa análise especializada.
+          </p>
         </div>
-        <button 
-          onClick={onAddClick}
-          className="w-full md:w-auto group flex flex-col items-center justify-center py-3 md:py-4 px-4 md:px-6 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-colors cursor-pointer shrink-0 relative z-10"
-        >
-          <div className="text-white flex items-center justify-center gap-2 mb-1 group-hover:scale-105 transition-all">
-            <Zap className="w-4 h-4 md:w-5 md:h-5 fill-white" />
-            <span className="text-sm font-bold text-white tracking-wide truncate">ANALISAR NOVO ITEM</span>
-          </div>
-        </button>
+
+        <div className="relative z-10 shrink-0 w-full md:w-auto flex flex-col items-start md:items-end self-end">
+           {/* Mobile Art */}
+           <div className="md:hidden w-full flex justify-end -mt-20 mb-6 opacity-30 pointer-events-none mix-blend-screen overflow-hidden">
+             <img src={headerArt} alt="Ilustração Colecionáveis" className="h-28 w-auto object-contain translate-x-4" />
+           </div>
+
+          <button 
+            onClick={onAddClick}
+            className="w-full md:w-auto group flex items-center justify-center py-4 px-8 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-all cursor-pointer shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:shadow-[0_0_40px_rgba(79,70,229,0.5)] active:scale-95"
+          >
+            <div className="text-white flex items-center justify-center gap-2 group-hover:scale-105 transition-all">
+              <Zap className="w-5 h-5 fill-white" />
+              <span className="text-[13px] font-black text-white tracking-widest uppercase">Analisar Novo Item</span>
+            </div>
+          </button>
+        </div>
       </header>
 
       {/* World Cup Promotional Banner */}

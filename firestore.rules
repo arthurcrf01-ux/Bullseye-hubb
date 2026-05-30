@@ -144,7 +144,7 @@ service cloud.firestore {
       allow get: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) &&
                  request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants;
                  
-      allow list: if isSignedIn() && isValidId(friendshipId) && resource.data.createdAt >= 0 &&
+      allow list: if isSignedIn() && isValidId(friendshipId) &&
                   request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants;
 
       allow create: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) && isValidChatMessage(incoming()) &&
