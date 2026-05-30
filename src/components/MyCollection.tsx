@@ -19,6 +19,7 @@ const rarityColors = {
 
 export function MyCollection() {
   const { items, deleteItem } = useStore();
+  const [expandedId, setExpandedId] = React.useState<string | null>(null);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -64,8 +65,12 @@ export function MyCollection() {
 
               {/* Content */}
               <div className="p-4 flex-1 flex flex-col">
-                <h3 className="text-sm font-bold text-white mb-2 line-clamp-1">{item.name}</h3>
-                <p className="text-xs text-slate-400 line-clamp-3 mb-4 flex-1">
+                <h3 className="text-sm font-bold text-white mb-2">{item.name}</h3>
+                <p 
+                    className={`text-xs text-slate-400 mb-4 flex-1 cursor-pointer transition-all ${expandedId === item.id ? '' : 'line-clamp-4'}`}
+                    onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
+                    title="Clique para ler mais"
+                >
                   {item.description}
                 </p>
                 <div className="flex items-center justify-between mt-auto">
