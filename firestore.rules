@@ -55,7 +55,8 @@ service cloud.firestore {
 
     function isValidFriendship(data) {
        return data.keys().hasAll(['id', 'participants', 'status', 'requesterId', 'createdAt', 'updatedAt']) &&
-              data.keys().size() == 6 &&
+              // Allow 'nicknames' dynamically up to 7 keys
+              data.keys().size() >= 6 && data.keys().size() <= 7 &&
               data.id is string && data.id.size() <= 128 &&
               data.participants is list && data.participants.size() == 2 &&
               data.participants[0] is string && data.participants[1] is string &&
@@ -63,7 +64,8 @@ service cloud.firestore {
               data.status is string && data.status in ['pending', 'accepted'] &&
               data.requesterId is string && data.requesterId in data.participants &&
               data.createdAt is number &&
-              data.updatedAt is number;
+              data.updatedAt is number &&
+              (!('nicknames' in data.keys()) || data.nicknames is map);
     }
 
     function isValidChatMessage(data) {
@@ -129,8 +131,11 @@ service cloud.firestore {
                        incoming().participants == existing().participants &&
                        incoming().requesterId == existing().requesterId &&
                        incoming().createdAt == existing().createdAt &&
-                       incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) &&
-                       incoming().status == 'accepted';
+                       (
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) && incoming().status == 'accepted') ||
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['nicknames'])) ||
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'nicknames']))
+                       );
 
       allow delete: if isSignedIn() && isValidId(friendshipId) && request.auth.uid in resource.data.participants;
     }
@@ -145,6 +150,8 @@ service cloud.firestore {
       allow create: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) && isValidChatMessage(incoming()) &&
                        request.auth.uid in get(/databases/$(database)/documents/friendships/$(friendshipId)).data.participants &&
                        get(/databases/$(database)/documents/friendships/$(friendshipId)).data.status == 'accepted';
+                       
+      allow delete: if isSignedIn() && isValidId(friendshipId) && isValidId(messageId) && resource.data.userId == request.auth.uid;
     }
   }
 }

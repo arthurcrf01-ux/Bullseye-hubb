@@ -32,6 +32,7 @@ export interface Friendship {
   requesterId: string;
   createdAt: number;
   updatedAt: number;
+  nicknames?: Record<string, string>;
 }
 
 export interface ChatMessage {

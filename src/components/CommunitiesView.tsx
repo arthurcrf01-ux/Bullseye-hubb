@@ -113,6 +113,7 @@ export function CommunitiesView() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Digite algo para o grupo..."
+              maxLength={1000}
               className="flex-1 bg-transparent px-2 py-2 text-sm md:text-base text-white focus:outline-none"
             />
             <button 

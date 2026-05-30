@@ -23,6 +23,8 @@ interface StoreState {
   acceptFriendRequest: (friendshipId: string) => Promise<void>;
   removeFriend: (friendshipId: string) => Promise<void>;
   sendDirectMessage: (friendshipId: string, text: string) => Promise<void>;
+  deleteDirectMessage: (friendshipId: string, messageId: string) => Promise<void>;
+  updateFriendNickname: (friendshipId: string, nickname: string) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreState | undefined>(undefined);
@@ -259,11 +261,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     await setDoc(doc(db, 'friendships', friendshipId, 'messages', msgId), message);
   };
 
+  const deleteDirectMessage = async (friendshipId: string, messageId: string) => {
+    if (!currentUser) return;
+    await deleteDoc(doc(db, 'friendships', friendshipId, 'messages', messageId));
+  };
+
+  const updateFriendNickname = async (friendshipId: string, nickname: string) => {
+    if (!currentUser) return;
+    await firestoreSetDoc(doc(db, 'friendships', friendshipId), {
+      nicknames: {
+        [currentUser.id]: nickname
+      }
+    }, { merge: true });
+  };
+
   return (
     <StoreContext.Provider value={{
       items, currentUser, leaderboard, communities, friendships, isLoaded, 
       addItem, deleteItem, login, logout, createCommunity, sendMessage, deleteCommunityMessage,
-      sendFriendRequest, acceptFriendRequest, removeFriend, sendDirectMessage
+      sendFriendRequest, acceptFriendRequest, removeFriend, sendDirectMessage, deleteDirectMessage, updateFriendNickname
     }}>
       {children}
     </StoreContext.Provider>
