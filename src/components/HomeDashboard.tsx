@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from '../store/StoreContext';
 import { Trophy, ArrowRight, Zap, Star, Target, Album } from 'lucide-react';
 import { motion } from 'motion/react';
+import headerArt from '../assets/images/header_collectibles_art_1780151622185.png';
 
 export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => void; onNavigate: (view: string) => void }) {
   const { currentUser, items, leaderboard } = useStore();
@@ -14,19 +15,31 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       {/* Header */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-8 pt-4">
-        <div>
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-8 pt-4 relative">
+        <div className="relative z-10 text-left">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-14 h-14 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 animate-pulse-slow shadow-[0_0_20px_rgba(79,70,229,0.3)]">
               <Target className="text-white w-8 h-8" />
             </div>
             <h2 className="text-sm font-bold tracking-widest text-slate-500 uppercase">Bullseye Dashboard</h2>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Bem-vindo,<br/><span className="text-indigo-400">{currentUser.name}</span>.</h1>
+          
+          <div className="flex gap-4 items-end mb-1">
+             <img 
+               src={headerArt} 
+               alt="Colecionáveis" 
+               className="h-16 md:h-20 w-auto object-contain opacity-80 mix-blend-screen pointer-events-none self-end scale-110 origin-bottom-left ml-[-8px] md:ml-[-12px]" 
+             />
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+            Bem-vindo,<br/>
+            <span className="text-indigo-400">{currentUser.name}</span>.
+          </h1>
         </div>
         <button 
           onClick={onAddClick}
-          className="w-full md:w-auto group flex flex-col items-center justify-center py-3 md:py-4 px-4 md:px-6 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-colors cursor-pointer shrink-0"
+          className="w-full md:w-auto group flex flex-col items-center justify-center py-3 md:py-4 px-4 md:px-6 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-colors cursor-pointer shrink-0 relative z-10"
         >
           <div className="text-white flex items-center justify-center gap-2 mb-1 group-hover:scale-105 transition-all">
             <Zap className="w-4 h-4 md:w-5 md:h-5 fill-white" />
