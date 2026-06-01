@@ -29,3 +29,41 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+/* --- DESIGNER BULLSEYE: CARRO E CARTA --- */
+
+/* Container para as imagens não ficarem soltas */
+.dashboard-visual-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+  /* Um brilho verde suave no fundo */
+  background: radial-gradient(circle, rgba(10, 255, 150, 0.05) 0%, transparent 70%);
+}
+
+/* O Porsche com sombra de chão e ângulo 3D */
+.img-porsche-premium {
+  width: 180px !important;
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.7)); /* Sombra realista */
+  transform: perspective(1000px) rotateY(-15deg) rotateX(5deg); /* Efeito 3D */
+  transition: transform 0.4s ease;
+}
+
+/* A Carta com inclinação de colecionador */
+.img-card-premium {
+  width: 95px !important;
+  height: auto;
+  margin-left: -45px; /* Sobreposição elegante */
+  margin-bottom: 15px;
+  z-index: 1;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
+  transform: perspective(1000px) rotate(12deg) rotateY(10deg);
+}
+
+/* Efeito de movimento profissional quando passa o mouse */
+.dashboard-visual-container:hover .img-porsche-premium {
+  transform: perspective(1000px) rotateY(-20deg) rotateX(8deg) translateY(-8px);
+}
