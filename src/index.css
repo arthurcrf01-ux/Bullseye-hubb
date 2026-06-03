@@ -31,58 +31,19 @@
   animation: float 6s ease-in-out infinite;
 }
 
-/* --- BANNER PROFISSIONAL BULLSEYE (ESTILO LOJA) --- */
-
-.premium-store-banner {
-  background: linear-gradient(135deg, #050a18 0%, #0a1631 100%);
-  border-radius: 2.5rem;
-  padding: 3.5rem;
-  border: 1px solid rgba(79, 70, 229, 0.2);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
-  margin-top: 1rem;
-}
-
-/* O Alvo (Logo) que fica no fundo como o da foto que você mandou */
-.banner-logo-bg {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 320px;
-  filter: blur(4px) opacity(0.12);
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Container das Imagens (Carro e Carta) */
-.showroom-container {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 1;
-  padding-bottom: 20px;
-}
-
+/* Estilo das Imagens */
 .img-porsche-premium {
-  width: 280px !important;
+  width: 200px !important;
   height: auto;
-  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.9));
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
   transform: perspective(1000px) rotateY(-15deg);
-  transition: transform 0.5s ease;
 }
 
 .img-card-premium {
-  width: 130px !important;
+  width: 110px !important;
   height: auto;
-  margin-left: -90px;
-  margin-bottom: 50px;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
-  transform: rotate(15deg) perspective(1000px) rotateY(10deg);
+  margin-left: -50px;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
+  transform: rotate(12deg);
 }
-
