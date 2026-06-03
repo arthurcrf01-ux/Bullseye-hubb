@@ -1,19 +1,20 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   body {
-    background-color: #020617; /* slate-950 */
-    color: #f1f5f9; /* slate-100 */
+    background-color: #020617;
+    color: #f1f5f9;
     font-family: ui-sans-serif, system-ui, sans-serif;
   }
 }
 
-/* Glass panel utility */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.5); /* slate-900/50 */
+  background: rgba(15, 23, 42, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #1e293b; /* slate-800 */
+  border: 1px solid #1e293b;
 }
 
 .animate-pulse-slow {
@@ -29,41 +30,59 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
-/* --- DESIGNER BULLSEYE: CARRO E CARTA --- */
 
-/* Container para as imagens não ficarem soltas */
-.dashboard-visual-container {
+/* --- BANNER PROFISSIONAL BULLSEYE (ESTILO LOJA) --- */
+
+.premium-store-banner {
+  background: linear-gradient(135deg, #050a18 0%, #0a1631 100%);
+  border-radius: 2.5rem;
+  padding: 3.5rem;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  margin-top: 1rem;
+}
+
+/* O Alvo (Logo) que fica no fundo como o da foto que você mandou */
+.banner-logo-bg {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 320px;
+  filter: blur(4px) opacity(0.12);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Container das Imagens (Carro e Carta) */
+.showroom-container {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  position: relative;
-  padding: 20px;
-  /* Um brilho verde suave no fundo */
-  background: radial-gradient(circle, rgba(10, 255, 150, 0.05) 0%, transparent 70%);
-}
-
-/* O Porsche com sombra de chão e ângulo 3D */
-.img-porsche-premium {
-  width: 180px !important;
-  height: auto;
-  z-index: 2;
-  filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.7)); /* Sombra realista */
-  transform: perspective(1000px) rotateY(-15deg) rotateX(5deg); /* Efeito 3D */
-  transition: transform 0.4s ease;
-}
-
-/* A Carta com inclinação de colecionador */
-.img-card-premium {
-  width: 95px !important;
-  height: auto;
-  margin-left: -45px; /* Sobreposição elegante */
-  margin-bottom: 15px;
   z-index: 1;
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
-  transform: perspective(1000px) rotate(12deg) rotateY(10deg);
+  padding-bottom: 20px;
 }
 
-/* Efeito de movimento profissional quando passa o mouse */
-.dashboard-visual-container:hover .img-porsche-premium {
-  transform: perspective(1000px) rotateY(-20deg) rotateX(8deg) translateY(-8px);
+.img-porsche-premium {
+  width: 280px !important;
+  height: auto;
+  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.9));
+  transform: perspective(1000px) rotateY(-15deg);
+  transition: transform 0.5s ease;
 }
+
+.img-card-premium {
+  width: 130px !important;
+  height: auto;
+  margin-left: -90px;
+  margin-bottom: 50px;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+  transform: rotate(15deg) perspective(1000px) rotateY(10deg);
+}
+
