@@ -4,9 +4,36 @@
 
 @layer base {
   body {
-    background-color: #020617 !important;
-    color: #f1f5f9 !important;
+    background-color: #020617;
+    color: #f1f5f9;
+    font-family: ui-sans-serif, system-ui, sans-serif;
     margin: 0;
     padding: 0;
   }
+}
+
+.glass-panel {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #1e293b;
+}
+
+/* Sombra e ângulo do Porsche e da Carta */
+.img-porsche-premium {
+  width: 180px !important;
+  height: auto;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.8));
+  transform: perspective(1000px) rotateY(-15deg);
+  z-index: 10;
+}
+
+.img-card-premium {
+  width: 100px !important;
+  height: auto;
+  margin-left: -40px;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+  transform: rotate(12deg);
+  z-index: 5;
 }
