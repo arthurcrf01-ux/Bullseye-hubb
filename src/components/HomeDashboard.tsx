@@ -1,23 +1,26 @@
 import React from 'react';
 import { useStore } from '../store/StoreContext';
-import { ArrowRight, Zap, Star, Target, Album } from 'lucide-react';
+import { Trophy, ArrowRight, Zap, Star, Target, Album } from 'lucide-react';
 import { motion } from 'motion/react';
 import headerArt from '../assets/images/vector_miniature_bullseye_card_1780160299601.png';
 
 export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => void; onNavigate: (view: string) => void }) {
   const { currentUser, items, leaderboard } = useStore();
+  
   if (!currentUser) return null;
+
   const topMonthly = leaderboard[0] || currentUser;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
+      {/* Header Original Restaurado */}
       <header className="relative flex flex-col md:flex-row justify-between items-center gap-8 pb-10 pt-6 border-b border-slate-800/50">
         <div className="relative z-10 text-left flex-1">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-indigo-600/20 text-indigo-400 flex items-center justify-center animate-pulse-slow border border-indigo-500/30">
               <Target className="w-5 h-5" />
             </div>
-            <h2 className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Bullseye</h2>
+            <h2 className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Bullseye Hub</h2>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-2">
             Bem-vindo,<br/><span className="text-indigo-400">{currentUser.name}</span>.
@@ -39,6 +42,7 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
         </div>
       </header>
 
+      {/* Banner Copa 2026 Restaurado */}
       <motion.div 
         whileHover={{ scale: 1.01 }}
         className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-800 rounded-3xl p-8 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.3)] border border-emerald-500/50 flex flex-col justify-center min-h-[160px] cursor-pointer"
@@ -63,6 +67,7 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
         </div>
       </motion.div>
 
+      {/* Stats Grid Restaurado */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="p-8 rounded-2xl bg-slate-900 border border-slate-800">
           <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Sua Pontuação</h3>
@@ -73,7 +78,7 @@ export function HomeDashboard({ onAddClick, onNavigate }: { onAddClick: () => vo
           <div className="text-5xl font-black text-white">{items.length}</div>
         </div>
         <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-900/40 to-slate-900 border border-indigo-500/30 flex items-center gap-4">
-          <img src={topMonthly.avatarUrl} alt="Avatar" className="w-10 h-10 rounded-full border border-indigo-400" />
+          <img src={topMonthly.avatarUrl} alt="Avatar" className="w-10 h-10 rounded-full border-2 border-indigo-400" />
           <div>
             <div className="text-[10px] font-bold uppercase text-indigo-400">Top Collector</div>
             <div className="text-xl font-black text-white">{topMonthly.name}</div>
